@@ -66,7 +66,7 @@
                                             <div class="form-group"><label class="control-label">Libellé catégorie</label>
 
                                                 <div class="">
-                                                    <input type="text" name="libelleCateg" id="libelleCateg" placeholder="" class="form-control" required>
+                                                    <input type="text" name="libelleCateg" id="libelleCateg"  class="form-control" required>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
@@ -116,7 +116,7 @@
                                                     <td>{{ categorie.id }}</td>
                                                     <td>{{ categorie.libelleCate }}</td>
                                                     <td>
-                                                        <a data-toggle="modal" data-target="#exampleModal"  onclick=" " title="modifier">
+                                                        <a data-toggle="modal" data-target="#exampleModal"  onclick="updateCategorie({{ categorie.id }}) " title="modifier">
                                                             <button class="btn btn-primary" type="submit"><i class="fa fa-pen"></i>Modifier</button>
                                                         </a>
                                                         <a href="" ><button class="btn btn-danger" type="submit" ><i class="fa fa-trash"></i>Supprimer</button></a>
@@ -314,7 +314,7 @@
                                                 <th>Ref</th>
                                                 <th>Nom</th>
                                                 <th>Description</th>
-                                                <th>Catégorie du produit</th>
+                                                <th>Prix unitaire</th>
                                                 <th>Actions</th>
                                             </tr>
                                             </thead>
@@ -324,7 +324,7 @@
                                                     <td>{{ prod.id }}</td>
                                                     <td>{{ prod.cateProd }}-{{ prod.libelleProd }}</td>
                                                     <td>{{ prod.description }}</td>
-                                                    <td>{{ prod.cateProd }}</td>
+                                                    <td>{{ prod.prixAchat }}</td>
                                                     <td>
                                                         <a data-toggle="modal" data-target="#modalprod"  onclick=" " title="modifier">
                                                             <button class="btn btn-primary" type="submit"><i class="fa fa-pen"></i>Modifier</button>
@@ -491,26 +491,24 @@
 
 {% block script %}
     <script type="text/javascript">
-        {#function updateCategorie( id ){#}
-        {#    {% for categorie in cate %}#}
-        {#        var posi='{{ categorie.id }}'#}
-        {#        if(posi == id)#}
-        {#        {#}
-        {##}
-        {##}
-        {#            document.getElementById('libelleCateg').value = '{{ categorie.libelleCate }}'#}
-        {##}
-        {#            actionForm=document.getElementById('ajoutcategorie')#}
-        {##}
-        {#            actionForm.action += 'update/'+id+'/'#}
-        {##}
-        {#            console.log('{{ update }}')#}
-        {##}
-        {#            console.log()#}
-        {#        }#}
-        {##}
-        {#    {% endfor %}#}
-        {#}#}
+        function updateCategorie( id ){
+            {% for categorie in cate %}
+                var posi='{{ categorie.id }}'
+                if(posi == id)
+                {
+                    document.getElementById('libelleCateg').value = '{{ categorie.libelleCate }}'
+
+                    actionForm=document.getElementById('ajoutcategorie')
+
+                    actionForm.action += 'update/'+id+'/'
+
+                    console.log('{{ update }}')
+
+                    console.log()
+                }
+
+            {% endfor %}
+        }
 
     </script>
 

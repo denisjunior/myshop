@@ -30,6 +30,20 @@ def categorie(request):
 
     return render(request, 'shop/produit.html', locals())
 
+@login_required
+def updateCategorie(request, id=None):
+    modif = get_object_or_404(Categorie, id=id)
+    cat = Categorie.objects.all()
+    if request.method == 'GET':
+        update = True
+        return render(request, 'shop/produit.html', locals())
+    else:
+        catForm = CategorieForm(request.POST or None, instance=modif)
+        if catForm.is_valid():
+            modif = catForm.save(commit=False)
+            modif.save()
+        return redirect(categorie)
+
 # CRUD PRODUITS
 @login_required
 def produits(request):

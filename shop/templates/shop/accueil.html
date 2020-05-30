@@ -6,14 +6,15 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="col-sm-10"><h3>Veuillez choisir un produit à vendre</h3></div><br>
-                    <form name="" method="post" autocomplete="off" class="form-horizontal style-form">
+                    <form name="" method="post" autocomplete="off" class="form-horizontal style-form" id="ajoutPro">
                         <div class="form-group mb-4 row">
                             <label class="col-sm-2 col-form-label">Nom du produit</label>
-                            <select class="form-control col-sm-10" name="libelleProd" id="libelleProd">
+                            <select class="form-control col-sm-10" name="libeProd" id="libelleProd">
                                 <optgroup class="col-sm-8">
                                     {% for pro in produit %}
-                                        <option value="{{ pro.id }}" selected>
+                                        <option value="{{ pro.libelleProd}}" selected>
                                             {{ pro.libelleProd }}
+
                                         </option>
                                     {% endfor %}
                                 </optgroup>
@@ -22,7 +23,7 @@
                         <div class="form-group mb-4 row">
                             <label class="col-sm-2 col-form-label">Quantite</label>
                             <div class="col-sm-10">
-                                <input type="number" id="appbundle_vente_quantite" name="appbundle_vente[quantite]" required="required" class="form-control" />
+                                <input type="number" id="quatite" name="quantite" required="required" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group mb-4 row">
@@ -31,8 +32,11 @@
                                 <input class="form-control" id="stock" type="text"  disabled="">
                             </div>
                         </div>
+                        <input type="hidden" id="prixAchat" name="prixAchat" value="{{ pro.prixAchat}}"/>
+
+
                         <div class="col-sm-7 ml-sm-auto">
-                            <button type="submit" id="btn" class="btn btn-primary">valider</button>
+                            <button type="submit" id="btn"  onclick="ajout()" class="btn btn-primary">valider</button>
                             <button type="reset" class="btn btn-default">annuler</button>
                         </div>
                     </form>
@@ -53,13 +57,15 @@
                             <table class="table table-bordered table-hover" id="datatable">
                                 <thead class="thead-default thead-lg">
                                 <tr>
-                                    <th>Ref</th>
                                     <th>Nom</th>
+                                    <th>Quantité</th>
+                                    <th>Prix unitaire</th>
                                     <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
+                                    <td></td>
                                     <td></td>
                                     <td></td>
                                     <td>
@@ -100,28 +106,54 @@
 {% endblock %}
 {% block script %}
     <script type="text/javascript">
+
         function ajout() {
-            $(document).ready(function() {
-                var t = $('#example').DataTable();
-                var counter = 1;
+            {% for prod in produit %}
+                var posi = '{{ prod.id }}'
+                var val = document.getElementById('libelleProd').value
 
-                $('#addRow').on( 'click', function () {
-                    t.row.add( [
-                        counter +'.1',
-                        counter +'.2',
-                        counter +'.3',
-                        counter +'.4',
-                        counter +'.5'
-                    ] ).draw( false );
+                if (posi == val)
+                {
+                    document.getElementById('prixAchat').value = '{{ prod.prixAchat }}'
 
-                    counter++;
-                } );
+                    $(document).on('submit', '#ajoutPro', function(event) {
+                        var t = $('#datatable').DataTable();
+                        event.preventDefault();
 
-                // Automatically add a first row of data
-                $('#addRow').click();
-            } );
+                        let form = $(this);
+                        var modifier = '<button type="submit" class="btn btn-primary">modifier</button>'
+                        var supprimer = '<button type="reset" class="btn btn-danger">supprimer</button>'
+
+                        t.row.add( [
+                            form.find('[name="libeProd"]').val(),
+                            form.find('[name="quantite"]').val(),
+                            form.find('[name="prixAchat"]').val(),
+                            modifier + supprimer
+                        ] ).draw( false );
+
+                    } );
+                }
+
+            {% endfor %}
         }
+
 
     </script>
 
 {% endblock %}
+$(document).on('submit', '#ajoutPro', function(event) {
+
+var t = $('#datatable').DataTable();
+event.preventDefault();
+let form = $(this);
+var modifier = '<button type="submit" class="btn btn-primary">modifier</button>'
+var supprimer = '<button type="reset" class="btn btn-danger">supprimer</button>'
+
+t.row.add( [
+form.find('[name="libeProd"]').val(),
+form.find('[name="quantite"]').val(),
+form.find('[name="prixAchat"]').val(),
+modifier + supprimer
+] ).draw( false );
+
+} );
