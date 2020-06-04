@@ -12,13 +12,15 @@
                             <select class="form-control col-sm-10" name="libeProd" id="libelleProd">
                                 <optgroup class="col-sm-8">
                                     {% for pro in produit %}
-                                        <option value="{{ pro.libelleProd}}" selected>
-                                            {{ pro.libelleProd }}
-
+                                        <option  value="{{pro.prixVente}}" selected>
+                                            {{pro.libelleProd}}
                                         </option>
+
                                     {% endfor %}
                                 </optgroup>
                             </select>
+
+
                         </div>
                         <div class="form-group mb-4 row">
                             <label class="col-sm-2 col-form-label">Quantite</label>
@@ -32,13 +34,11 @@
                                 <input class="form-control" id="stock" type="text"  disabled="">
                             </div>
                         </div>
-                        <input type="hidden" id="prixAchat" name="prixAchat" value="{{ pro.prixAchat}}"/>
-
-
                         <div class="col-sm-7 ml-sm-auto">
-                            <button type="submit" id="btn"  onclick="ajout()" class="btn btn-primary">valider</button>
+                            <button type="submit" id="btn"   class="btn btn-primary">valider</button>
                             <button type="reset" class="btn btn-default">annuler</button>
                         </div>
+                        <input type="text"  id="prixU" name="prixVente" value="{{ prixVente }}" hidden/>
                     </form>
                 </div>
 
@@ -84,8 +84,56 @@
                     <div class="row">
 
                         <a><button style="margin-left:200%" class="btn btn-primary">Valider la facture</button></a>
-
                     </div>
+
+                    <!-- Modal approvisionnement -->
+                    <div class="modal fade" id="modalModif" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="" name="ajoutApprovi" method="post" autocomplete="off" id="ajoutApprovi" >
+                                        {% csrf_token %}
+
+                                        <div class="form-group mb-4 row">
+                                            <label class="col-sm-2 col-form-label">Nom de produit</label>
+                                            <select class="form-control col-sm-8" name="libeProduit" id="prod2">
+                                                <optgroup class="col-sm-8">
+
+                                                    <option value="">
+
+                                                    </option>
+
+                                                </optgroup>
+
+                                            </select>
+                                        </div>
+                                        <div class="form-group mb-4 row">
+                                            <label class="col-sm-2 col-form-label">Quantite</label>
+                                            <div class="col-sm-10">
+                                                <input type="number" id="qt2" name="quantite" required="required" class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-4 row">
+                                            <label class="col-sm-2 col-form-label">Quantite ajoutable à la facture</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" id="stock2" type="text"  disabled="">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Valider</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- fin modal-->
 
                 </div>
             </div><br>
@@ -106,54 +154,36 @@
 {% endblock %}
 {% block script %}
     <script type="text/javascript">
+        var nom,prix
 
-        function ajout() {
-            {% for prod in produit %}
-                var posi = '{{ prod.id }}'
-                var val = document.getElementById('libelleProd').value
+        $("select").on("change", function() {
+            console.log($("select").val())
+            console.log($("select option:selected").text())
 
-                if (posi == val)
-                {
-                    document.getElementById('prixAchat').value = '{{ prod.prixAchat }}'
+            prix = $("select").val()
+            nom  = $("select option:selected").text()
+        });
 
-                    $(document).on('submit', '#ajoutPro', function(event) {
-                        var t = $('#datatable').DataTable();
-                        event.preventDefault();
 
-                        let form = $(this);
-                        var modifier = '<button type="submit" class="btn btn-primary">modifier</button>'
-                        var supprimer = '<button type="reset" class="btn btn-danger">supprimer</button>'
+        $(document).on('submit', '#ajoutPro', function(event) {
+            var t = $('#datatable').DataTable();
+            event.preventDefault();
+            let form = $(this);
+            var modifier = '<button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modalModif">modifier</button>'
+            var supprimer = '<button type="reset" class="btn btn-danger">supprimer</button>'
 
-                        t.row.add( [
-                            form.find('[name="libeProd"]').val(),
-                            form.find('[name="quantite"]').val(),
-                            form.find('[name="prixAchat"]').val(),
-                            modifier + supprimer
-                        ] ).draw( false );
+            t.row.add( [
+                nom,
+                form.find('[name="quantite"]').val(),
+                prix,
+                modifier + supprimer
+            ] ).draw( false );
 
-                    } );
-                }
+        } );
 
-            {% endfor %}
-        }
+
 
 
     </script>
 
 {% endblock %}
-$(document).on('submit', '#ajoutPro', function(event) {
-
-var t = $('#datatable').DataTable();
-event.preventDefault();
-let form = $(this);
-var modifier = '<button type="submit" class="btn btn-primary">modifier</button>'
-var supprimer = '<button type="reset" class="btn btn-danger">supprimer</button>'
-
-t.row.add( [
-form.find('[name="libeProd"]').val(),
-form.find('[name="quantite"]').val(),
-form.find('[name="prixAchat"]').val(),
-modifier + supprimer
-] ).draw( false );
-
-} );
