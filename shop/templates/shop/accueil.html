@@ -83,46 +83,49 @@
 
                     <div class="row">
 
-                        <a><button style="margin-left:200%" class="btn btn-primary">Valider la facture</button></a>
+                        <a data-toggle="modal" data-target="#modalModif"><button style="margin-left:200%" class="btn btn-primary">Valider la facture</button></a>
                     </div>
 
                     <!-- Modal approvisionnement -->
                     <div class="modal fade" id="modalModif" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
+                        <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Paiement du client</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
+                                    <div class="row"><div class=""><h4>Total de la facture : <b><span id="peye2">0</span> FCFA </b></h4></div></div>
+                                    <br>
+
+                                    <div class="row"> <div> <h4>Total à payer : <b><span id="to2">0</span> FCFA </b></h4></div></div>
+                                    <br><br>
+
                                     <form action="" name="ajoutApprovi" method="post" autocomplete="off" id="ajoutApprovi" >
-                                        {% csrf_token %}
-
                                         <div class="form-group mb-4 row">
-                                            <label class="col-sm-2 col-form-label">Nom de produit</label>
-                                            <select class="form-control col-sm-8" name="libeProduit" id="prod2">
-                                                <optgroup class="col-sm-8">
-
-                                                    <option value="">
-
-                                                    </option>
-
-                                                </optgroup>
-
-                                            </select>
-                                        </div>
-                                        <div class="form-group mb-4 row">
-                                            <label class="col-sm-2 col-form-label">Quantite</label>
+                                            <label class="col-sm-2 col-form-label">Remise</label>
                                             <div class="col-sm-10">
-                                                <input type="number" id="qt2" name="quantite" required="required" class="form-control" />
+                                                <input type="number" id="remise" name="remise" onkeyup="remiz()" class="form-control" />
                                             </div>
                                         </div>
                                         <div class="form-group mb-4 row">
-                                            <label class="col-sm-2 col-form-label">Quantite ajoutable à la facture</label>
+                                            <label class="col-sm-2 col-form-label">Somme remise par le client</label>
                                             <div class="col-sm-10">
-                                                <input class="form-control" id="stock2" type="text"  disabled="">
+                                                <input class="form-control" id="client" onkeyup="calcul()" type="text">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-4 row">
+                                            <label class="col-sm-2 col-form-label">Monnaie à remettre au client</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" id="monnaie" type="text"  disabled="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group mb-4 row">
+                                            <label class="col-sm-2 col-form-label">Monnaie remise au client</label>
+                                            <div class="col-sm-10">
+                                                <input class="form-control" id="remi" type="text">
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -154,7 +157,9 @@
 {% endblock %}
 {% block script %}
     <script type="text/javascript">
-        var nom,prix
+        var nom,prix, quantity
+        var facture={"produit":[],"caisse":[]};
+        var form = document.querySelector('form')
 
         $("select").on("change", function() {
             console.log($("select").val())
@@ -165,12 +170,17 @@
         });
 
 
+        var totaux=0;
         $(document).on('submit', '#ajoutPro', function(event) {
             var t = $('#datatable').DataTable();
+
             event.preventDefault();
             let form = $(this);
             var modifier = '<button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modalModif">modifier</button>'
             var supprimer = '<button type="reset" class="btn btn-danger">supprimer</button>'
+            quantity =document.getElementById('quatite').value
+
+            totaux += (quantity*prix)
 
             t.row.add( [
                 nom,
@@ -178,8 +188,103 @@
                 prix,
                 modifier + supprimer
             ] ).draw( false );
+            document.getElementById('peye').innerHTML=totaux;
+            document.getElementById('to').innerHTML=totaux;
+            document.getElementById('peye2').innerHTML=totaux;
+            document.getElementById('to2').innerHTML=totaux;
 
         } );
+
+        //fonction qui permet de calculer la monnaie qu'on doit remettre au client
+        function calcul()
+        {
+            if(parseInt(totaux)>0)
+            {
+                if(parseInt(document.getElementById('client').value) > parseInt(totaux))
+                {
+                    document.getElementById('monnaie').value = parseInt(document.getElementById('client').value)-parseInt(totaux)
+                    document.getElementById('remi').disabled = false
+                }
+                if(parseInt(document.getElementById('client').value) < parseInt(totaux))
+                {
+                    document.getElementById('monnaie').value = ""
+                    document.getElementById('remi').value = ""
+                    document.getElementById('remi').disabled = true
+                }
+                if(parseInt(document.getElementById('client').value) == parseInt(totaux))
+                {
+                    document.getElementById('monnaie').value = 0
+                    document.getElementById('remi').value = 0
+                    document.getElementById('remi').disabled = true
+                }
+                if(document.getElementById('client').value == "")
+                {
+                    document.getElementById('monnaie').value = ""
+                    document.getElementById('remi').value = ""
+                    document.getElementById('remi').disabled = true
+                }
+
+            }
+
+        }
+        // fonction qui permet de calculer la remise
+        function remiz()
+        {
+            if (parseInt(totaux) > 0)
+            {
+                if(parseInt(document.getElementById('remise').value)>=0)
+                {
+                    document.getElementById('to').innerHTML=totaux;
+                    document.getElementById('to2').innerHTML=totaux;
+                    document.getElementById('client').innerHTML=""
+                    document.getElementById('monnaie').innerHTML=""
+                    document.getElementById('remi').innerHTML=""
+                    document.getElementById('remi').disabled= true
+                }
+
+                if(document.getElementById('remise').value == "")
+                {
+                    document.getElementById('to').innerHTML=totaux;
+                    document.getElementById('to2').innerHTML=totaux;
+                    document.getElementById('client').value = ""
+                    document.getElementById('monnaie').value =""
+                    document.getElementById('remi').value =""
+                    document.getElementById('remi').disabled= true
+                }
+            }
+        }
+
+
+
+        function total() {
+            totaux=0;
+            toto=0;
+
+            for (var i = 0; i < facture.produit.length; i++){
+                if(facture.produit[i]!=""){
+                    totaux += (facture.produit[i].quantity*facture.produit[i].prix);
+                    toto   += (facture.produit[i].quantity*facture.produit[i].prix);
+
+                }
+            };
+            if(document.getElementById('remise').value == ""){
+                document.getElementById('client').disabled = false
+                return toto;
+            }else {
+                if(document.getElementById('remise').value > 0){
+                    if(document.getElementById('remise').value <= totaux){
+                        document.getElementById('client').disabled = false
+                        totaux -=document.getElementById('remise').value
+                        return totaux;
+                    }else {
+                        document.getElementById('client').disabled = true
+                        return toto;
+                    }
+                }
+            }
+        }
+
+
 
 
 
