@@ -2,8 +2,6 @@
 {% load static %}
 
 {% block content %}
-
-
     <div class="col-lg-12">
 
         <div class="ibox">
@@ -32,7 +30,7 @@
                             <h3>Ajout d'une Nouvelle Categorie de Produit</h3>
                         </div><br>
                         <div>
-                            <form action="{% url 'addCategorie' %}" method="post" autocomplete="off">
+                            <form action="{% url 'index2' %}" method="post" autocomplete="off">
                                 {% csrf_token %}
                                 <div class="form-group mb-4 row">
                                     <label class="col-sm-2 col-form-label">Nom de la catégorie</label>
@@ -50,55 +48,48 @@
                             </form>
                         </div>
 
-                        <!-- Modal categorie -->
-                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="" name="ajoutcategorie" method="post" autocomplete="off" id="ajoutcategorie" >
-                                            {% csrf_token %}
-                                            <div class="form-group"><label class="control-label">Libellé catégorie</label>
-
-                                                <div class="">
-                                                    <input type="text" name="libelleCateg" id="libelleCateg"  class="form-control" required>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">Valider</button>
-                                            </div>
-                                        </form>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <!-- fin modal-->
+{#                        <!-- Modal categorie -->#}
+{#                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">#}
+{#                            <div class="modal-dialog">#}
+{#                                <div class="modal-content">#}
+{#                                    <div class="modal-header">#}
+{#                                        <h5 class="modal-title" id="exampleModalLabel">Modification</h5>#}
+{#                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#                                            <span aria-hidden="true">&times;</span>#}
+{#                                        </button>#}
+{#                                    </div>#}
+{#                                    <div class="modal-body">#}
+{#                                        <form action="{% if update == True%}{% url 'updateCategorie' categorie.id %}{% endif %}" name="modifCate" method="post" autocomplete="off" id="modifCate" >#}
+{#                                            {% csrf_token %}#}
+{#                                            <div class="form-group"><label class="control-label">Libellé catégorie</label>#}
+{##}
+{#                                                <div class="">#}
+{#                                                    <input type="text" name="libelleCateg" id="libelleCateg"  class="form-control" required>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            <div class="modal-footer">#}
+{#                                                <button type="submit" class="btn btn-primary">Valider</button>#}
+{#                                            </div>#}
+{#                                        </form>#}
+{#                                    </div>#}
+{##}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <!-- fin modal-->#}
                         <hr style="background: black">
                         <!-- datatable catégorie -->
                         <div class="page-content fade-in-up">
                             <div class="ibox">
                                 <div class="ibox-body">
-                                    <h5 class="font-strong mb-4">DATATABLE</h5>
+                                    <h5 class="font-strong mb-4">LISTE DES CATEGORIES</h5>
                                     <div class="flexbox mb-4">
                                         <div class="flexbox">
-                                            <label class="mb-0 mr-2">Type:</label>
-                                            <select class="selectpicker show-tick form-control" id="type-filter" title="Please select" data-style="btn-solid" data-width="150px">
-                                                <option value="">All</option>
-                                                <option>Shipped</option>
-                                                <option>Completed</option>
-                                                <option>Pending</option>
-                                                <option>Canceled</option>
-                                            </select>
+
                                         </div>
                                         <div class="input-group-icon input-group-icon-left mr-3">
                                             <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
-                                            <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Search ...">
+                                            <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Rechercher ...">
                                         </div>
                                     </div>
                                     <div class="table-responsive row">
@@ -116,9 +107,10 @@
                                                     <td>{{ categorie.id }}</td>
                                                     <td>{{ categorie.libelleCate }}</td>
                                                     <td>
-                                                        <a data-toggle="modal" data-target="#exampleModal"  onclick="updateCategorie({{ categorie.id }}) " title="modifier">
-                                                            <button class="btn btn-primary" type="submit"><i class="fa fa-pen"></i>Modifier</button>
-                                                        </a>
+                                                        <a class="btn btn-primary"   name="Modifier"  href="{% url 'modifi' categorie.id %}" value="">Modifier</a>
+                                                        <!-- <a data-toggle="modal" data-target="#exampleModal"  onclick="updateCategorie({{ categorie.id }}</) " title="modifier"> -->
+                                                            <!-- <button class="btn btn-primary" type="submit"><i class="fa fa-pen"></i>Modifier</button> -->
+                                                        <!-- </a> -->
                                                         <a href="" ><button class="btn btn-danger" type="submit" ><i class="fa fa-trash"></i>Supprimer</button></a>
 
                                                     </td>
@@ -140,7 +132,7 @@
                             <h3>Ajout d'un Nouveau Produit</h3>
                         </div><br>
                         <div>
-                            <form action="{% url 'addProduit' %}" method="post" autocomplete="off">
+                            <form action="{% url 'produit2' %}" method="post" autocomplete="off">
                                 {% csrf_token %}
                                 <div class="form-group mb-4 row">
                                     <label class="col-sm-2 col-form-label">Catégorie de produit</label>
@@ -205,106 +197,99 @@
                                 </div>
                             </form>
                         </div>
-                        <!-- Modal produit -->
-                        <div class="modal fade" id="modalprod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="" name="ajoutProd" method="post" autocomplete="off" id="ajoutProd" >
-                                            {% csrf_token %}
-                                            <div class="form-group mb-4 row">
-                                                <label class="col-sm-2 col-form-label">Catégorie de produit</label>
-                                                <select class="form-control col-sm-8" name="cateProd" id="cateProd">
-                                                    <optgroup class="col-sm-8">
-                                                        {% for categ in categori %}
-                                                            <option value="{{ categ.id }}" {% if categ.id == produit.categorie.id %} selected{% endif %}>
-                                                                {{ categ.libelleCate }}
-                                                            </option>
-                                                        {% endfor %}
-                                                    </optgroup>
-
-                                                </select>
-                                            </div>
-                                            <div class="form-group mb-4 row">
-                                                <label class="col-sm-2 col-form-label">Nom du produit</label>
-
-                                                <div class="col-sm-8">
-                                                    <input type="text" name="libelleProd" id="libeProd" placeholder="" class="form-control" required>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mb-4 row">
-                                                <label class="col-sm-2 col-form-label">Quantité du produit</label>
-
-                                                <div class="col-sm-8">
-                                                    <input type="number" name="quantite" id="qtite" class="form-control" required>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mb-4 row">
-                                                <label class="col-sm-2 col-form-label">Prix d'achat du produit</label>
-
-                                                <div class="col-sm-8">
-                                                    <input type="number" name="prixAchat" id="prixAch" class="form-control" required>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mb-4 row">
-                                                <label class="col-sm-2 col-form-label">Prix de vente du produit</label>
-
-                                                <div class="col-sm-8">
-                                                    <input type="number" name="prixVente" id="prixVen" class="form-control" required>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mb-4 row">
-                                                <label class="col-sm-2 col-form-label">Stock minimum</label>
-
-                                                <div class="col-sm-8">
-                                                    <input type="number" name="stock" id="stockProd" class="form-control" required>
-                                                </div>
-                                            </div>
-                                            <div class="form-group mb-4 row">
-                                                <label class="col-sm-2 col-form-label">Description du produit</label>
-
-                                                <div class="col-sm-8">
-                                                    <input type="text" name="description" id="descProd" placeholder="" class="form-control" required>
-                                                </div>
-                                            </div>
-
-
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">Valider</button>
-                                            </div>
-                                        </form>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                        <!-- fin modal-->
+{#                        <!-- Modal produit -->#}
+{#                        <div class="modal fade" id="modalprod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">#}
+{#                            <div class="modal-dialog">#}
+{#                                <div class="modal-content">#}
+{#                                    <div class="modal-header">#}
+{#                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>#}
+{#                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#                                            <span aria-hidden="true">&times;</span>#}
+{#                                        </button>#}
+{#                                    </div>#}
+{#                                    <div class="modal-body">#}
+{#                                        <form action="" name="ajoutProd" method="post" autocomplete="off" id="ajoutProd" >#}
+{#                                            {% csrf_token %}#}
+{#                                            <div class="form-group mb-4 row">#}
+{#                                                <label class="col-sm-2 col-form-label">Catégorie de produit</label>#}
+{#                                                <select class="form-control col-sm-8" name="cateProd" id="cateProd">#}
+{#                                                    <optgroup class="col-sm-8">#}
+{#                                                        {% for categ in categori %}#}
+{#                                                            <option value="{{ categ.id }}" {% if categ.id == produit.categorie.id %} selected{% endif %}>#}
+{#                                                                {{ categ.libelleCate }}#}
+{#                                                            </option>#}
+{#                                                        {% endfor %}#}
+{#                                                    </optgroup>#}
+{##}
+{#                                                </select>#}
+{#                                            </div>#}
+{#                                            <div class="form-group mb-4 row">#}
+{#                                                <label class="col-sm-2 col-form-label">Nom du produit</label>#}
+{##}
+{#                                                <div class="col-sm-8">#}
+{#                                                    <input type="text" name="libelleProd" id="libeProd" placeholder="" class="form-control" required>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            <div class="form-group mb-4 row">#}
+{#                                                <label class="col-sm-2 col-form-label">Quantité du produit</label>#}
+{##}
+{#                                                <div class="col-sm-8">#}
+{#                                                    <input type="number" name="quantite" id="qtite" class="form-control" required>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            <div class="form-group mb-4 row">#}
+{#                                                <label class="col-sm-2 col-form-label">Prix d'achat du produit</label>#}
+{##}
+{#                                                <div class="col-sm-8">#}
+{#                                                    <input type="number" name="prixAchat" id="prixAch" class="form-control" required>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            <div class="form-group mb-4 row">#}
+{#                                                <label class="col-sm-2 col-form-label">Prix de vente du produit</label>#}
+{##}
+{#                                                <div class="col-sm-8">#}
+{#                                                    <input type="number" name="prixVente" id="prixVen" class="form-control" required>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            <div class="form-group mb-4 row">#}
+{#                                                <label class="col-sm-2 col-form-label">Stock minimum</label>#}
+{##}
+{#                                                <div class="col-sm-8">#}
+{#                                                    <input type="number" name="stock" id="stockProd" class="form-control" required>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            <div class="form-group mb-4 row">#}
+{#                                                <label class="col-sm-2 col-form-label">Description du produit</label>#}
+{##}
+{#                                                <div class="col-sm-8">#}
+{#                                                    <input type="text" name="description" id="descProd" placeholder="" class="form-control" required>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{##}
+{##}
+{#                                            <div class="modal-footer">#}
+{#                                                <button type="submit" class="btn btn-primary">Valider</button>#}
+{#                                            </div>#}
+{#                                        </form>#}
+{#                                    </div>#}
+{##}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <!-- fin modal-->#}
                         <hr style="background: black">
                         <!-- datatable produit -->
                         <div class="page-content fade-in-up">
                             <div class="ibox">
                                 <div class="ibox-body">
-                                    <h5 class="font-strong mb-4">DATATABLE</h5>
+                                    <h5 class="font-strong mb-4">LISTE DES PRODUITS </h5>
                                     <div class="flexbox mb-4">
                                         <div class="flexbox">
-                                            <label class="mb-0 mr-2">Type:</label>
-                                            <select class="selectpicker show-tick form-control" id="type-filter" title="Please select" data-style="btn-solid" data-width="150px">
-                                                <option value="">All</option>
-                                                <option>Shipped</option>
-                                                <option>Completed</option>
-                                                <option>Pending</option>
-                                                <option>Canceled</option>
-                                            </select>
+
                                         </div>
                                         <div class="input-group-icon input-group-icon-left mr-3">
                                             <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
-                                            <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Search ...">
+                                            <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Rechercher ...">
                                         </div>
                                     </div>
                                     <div class="table-responsive row">
@@ -350,7 +335,7 @@
                             <h3>Nouvel approvisionnement de produit</h3>
                         </div><br>
                         <div>
-                            <form action="{% url 'addEntre' %}" method="post" autocomplete="off">
+                            <form action="{% url 'addEntre2' %}" method="post" autocomplete="off">
                                 {% csrf_token %}
                                 <div class="form-group mb-4 row">
                                     <label class="col-sm-2 col-form-label">Nom de produit</label>
@@ -381,69 +366,62 @@
                                 </div>
                             </form>
                         </div>
-                        <!-- Modal approvisionnement -->
-                        <div class="modal fade" id="modalprod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form action="" name="ajoutApprovi" method="post" autocomplete="off" id="ajoutApprovi" >
-                                            {% csrf_token %}
-
-                                            <div class="form-group mb-4 row">
-                                                <label class="col-sm-2 col-form-label">Nom de produit</label>
-                                                <select class="form-control col-sm-8" name="prodE" id="prodEntre">
-                                                    <optgroup class="col-sm-8">
-                                                        {% for pr in produit %}
-                                                            <option value="{{ pr.id }}" {% if pr.id == entre.produit.id %} selected{% endif %}>
-                                                                {{ pr.libelleProd }}
-                                                            </option>
-                                                        {% endfor %}
-                                                    </optgroup>
-
-                                                </select>
-                                            </div>
-                                            <div class="form-group mb-4 row">
-                                                <label class="col-sm-2 col-form-label">Quantité</label>
-
-                                                <div class="col-sm-8">
-                                                    <input type="text" name="qtE" id="qtEntre" placeholder="" class="form-control" required>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">Valider</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- fin modal-->
+{#                        <!-- Modal approvisionnement -->#}
+{#                        <div class="modal fade" id="modalprod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">#}
+{#                            <div class="modal-dialog">#}
+{#                                <div class="modal-content">#}
+{#                                    <div class="modal-header">#}
+{#                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>#}
+{#                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+{#                                            <span aria-hidden="true">&times;</span>#}
+{#                                        </button>#}
+{#                                    </div>#}
+{#                                    <div class="modal-body">#}
+{#                                        <form action="" name="ajoutApprovi" method="post" autocomplete="off" id="ajoutApprovi" >#}
+{#                                            {% csrf_token %}#}
+{##}
+{#                                            <div class="form-group mb-4 row">#}
+{#                                                <label class="col-sm-2 col-form-label">Nom de produit</label>#}
+{#                                                <select class="form-control col-sm-8" name="prodE" id="prodEntre">#}
+{#                                                    <optgroup class="col-sm-8">#}
+{#                                                        {% for pr in produit %}#}
+{#                                                            <option value="{{ pr.id }}" {% if pr.id == entre.produit.id %} selected{% endif %}>#}
+{#                                                                {{ pr.libelleProd }}#}
+{#                                                            </option>#}
+{#                                                        {% endfor %}#}
+{#                                                    </optgroup>#}
+{##}
+{#                                                </select>#}
+{#                                            </div>#}
+{#                                            <div class="form-group mb-4 row">#}
+{#                                                <label class="col-sm-2 col-form-label">Quantité</label>#}
+{##}
+{#                                                <div class="col-sm-8">#}
+{#                                                    <input type="text" name="qtE" id="qtEntre" placeholder="" class="form-control" required>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            <div class="modal-footer">#}
+{#                                                <button type="submit" class="btn btn-primary">Valider</button>#}
+{#                                            </div>#}
+{#                                        </form>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <!-- fin modal-->#}
                         <hr style="background: black">
                         <!-- datatable approvisionnement -->
                         <div class="page-content fade-in-up">
                             <div class="ibox">
                                 <div class="ibox-body">
-                                    <h5 class="font-strong mb-4">DATATABLE</h5>
+                                    <h5 class="font-strong mb-4">LISTE DES APPROVISIONNEMENTS</h5>
                                     <div class="flexbox mb-4">
                                         <div class="flexbox">
-                                            <label class="mb-0 mr-2">Type:</label>
-                                            <select class="selectpicker show-tick form-control" id="type-filter" title="Please select" data-style="btn-solid" data-width="150px">
-                                                <option value="">All</option>
-                                                <option>Shipped</option>
-                                                <option>Completed</option>
-                                                <option>Pending</option>
-                                                <option>Canceled</option>
-                                            </select>
+
                                         </div>
                                         <div class="input-group-icon input-group-icon-left mr-3">
                                             <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
-                                            <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Search ...">
+                                            <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Rechercher ...">
                                         </div>
                                     </div>
                                     <div class="table-responsive row">
@@ -491,24 +469,24 @@
 
 {% block script %}
     <script type="text/javascript">
-        function updateCategorie( id ){
-            {% for categorie in cate %}
-                var posi='{{ categorie.id }}'
-                if(posi == id)
-                {
-                    document.getElementById('libelleCateg').value = '{{ categorie.libelleCate }}'
-
-                    actionForm=document.getElementById('ajoutcategorie')
-
-                    actionForm.action += 'update/'+id+'/'
-
-                    console.log('{{ update }}')
-
-                    console.log()
-                }
-
-            {% endfor %}
-        }
+        {#function updateCategorie( id ){#}
+        {#    {% for categorie in cate %}#}
+        {#        var posi='{{ categorie.id }}'#}
+        {#        if(posi == id)#}
+        {#        {#}
+        {#            document.getElementById('libelleCateg').value = '{{ categorie.libelleCate }}'#}
+        {##}
+        {#            actionForm=document.getElementById('modifCate')#}
+        {##}
+        {#            actionForm.action += 'update/'+id+'/'#}
+        {##}
+        {#            console.log('{{ update }}')#}
+        {##}
+        {#            console.log()#}
+        {#        }#}
+        {##}
+        {#    {% endfor %}#}
+        {#}#}
 
     </script>
 

@@ -1,0 +1,32 @@
+{% extends "base2.html" %}
+{% load static %}
+
+{% block content%}
+    <div class="column">
+        <section class="panel">
+            <div class="panel-body">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+                <form method="post" name ="ajoutcategorie" id="ajoutcategorie" action="{% url 'modification' modif.id %}">
+                    {% csrf_token %}
+                    <div class="form-group "><label class="control-label">Nouveau Libellé catégorie</label>
+
+                        <div class="col-lg-6">
+                            <input type="text" name="libellecateg" id="libelleCateg" value="{{modif.libelleCate }}" class="form-control" required>
+                        </div>
+
+                        <div class=""><p></br></p></div>
+                        <button type="submit" class="btn btn-primary">Valider</button>
+
+                    </div>
+
+                </form>
+            </div>
+        </section>
+    </div>
+{% endblock %}
+
+

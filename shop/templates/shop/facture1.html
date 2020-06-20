@@ -1,0 +1,155 @@
+{% extends "base1.html" %}
+
+{% block content %}
+    <body>
+    <div class="nav notify-row" id="top_menu">
+        <!--  notification start -->
+        <ul class="nav top-menu">
+            <!-- notification dropdown start-->
+            <li id="header_notification_bar" class="dropdown">
+                <a  href="#">
+                    <i class="fa fa-bell-o"></i>
+                </a>
+            </li>
+            <!-- notification dropdown end -->
+        </ul>
+        <!--  notification end -->
+    </div>
+
+    <div id="invoice">
+        <div class="toolbar hidden-print">
+            <div class="text-right">
+                <button id="printInvoice" class="btn btn-info"><i class="fa fa-print"></i> Print</button>
+                <button class="btn btn-info"><i class="fa fa-file-pdf-o"></i> Export as PDF</button>
+            </div>
+            <hr>
+        </div>
+        <div class="invoice overflow-auto">
+            <div style="min-width: 600px">
+                <header>
+                    <div class="row">
+                        <div class="col">
+                            <a target="_blank" href="https://lobianijs.com">
+                                <img src="http://lobianijs.com/lobiadmin/version/1.0/ajax/img/logo/lobiadmin-logo-text-64.png" data-holder-rendered="true" />
+                            </a>
+                        </div>
+                        <div class="col company-details">
+                            <h2 class="name">
+                                <a target="_blank" href="https://lobianijs.com">
+                                    Arboshiki
+                                </a>
+                            </h2>
+                            <div>455 Foggy Heights, AZ 85004, US</div>
+                            <div>(123) 456-789</div>
+                            <div>company@example.com</div>
+                        </div>
+                    </div>
+                </header>
+                <main>
+                    <div class="row contacts">
+                        <div class="col invoice-to">
+                            <div class="text-gray-light">INVOICE TO:</div>
+                            <h2 class="to">John Doe</h2>
+                            <div class="address">796 Silver Harbour, TX 79273, US</div>
+                            <div class="email"><a href="mailto:john@example.com">john@example.com</a></div>
+                        </div>
+                        <div class="col invoice-details">
+                            <h1 class="invoice-id">INVOICE 3-2-1</h1>
+                            <div class="date">Date of Invoice: 01/10/2018</div>
+                            <div class="date">Due Date: 30/10/2018</div>
+                        </div>
+                    </div>
+                    <table border="0" cellspacing="0" cellpadding="0">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th class="text-left">DESCRIPTION</th>
+                            <th class="text-right">Quantité</th>
+                            <th class="text-right">Prix Unitaire</th>
+                            <th class="text-right">TOTAL</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for data in facture %}
+                            {% if data.id == facture.produitId.id and data.id == facture.venteId.id %}
+                                <tr>
+                                    <td class="no">04</td>
+                                    <td class="text-left"><h3>{{ facture.produitId.libelleProd }}</h3></td>
+                                    <td class="unit">$0.00</td>
+                                    <td class="qty">100</td>
+                                    <td class="total">$0.00</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td colspan="2">SUBTOTAL</td>
+                            <td>$5,200.00</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td colspan="2">TAX 25%</td>
+                            <td>$1,300.00</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td colspan="2">GRAND TOTAL</td>
+                            <td>$6,500.00</td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                    <div class="thanks">Thank you!</div>
+                    <div class="notices">
+                        <div>NOTICE:</div>
+                        <div class="notice">A finance charge of 1.5% will be made on unpaid balances after 30 days.</div>
+                    </div>
+                </main>
+                <footer>
+                    Invoice was created on a computer and is valid without the signature and seal.
+                </footer>
+            </div>
+            <!--DO NOT DELETE THIS div. IT is responsible for showing footer always at the bottom-->
+            <div></div>
+        </div>
+    </div>
+
+    </body>
+
+{% endblock %}
+{% block script %}
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+            var unique_id = $.gritter.add({
+                // (string | mandatory) the heading of the notification
+                title: 'Information !',
+                // (string | mandatory) the text inside the notification
+                text: 'Vente effectué avec succès',
+                // (string | optional) the image to display on the left
+                image: 'assets/img/users/user.png',
+                // (bool | optional) if you want it to fade out on its own or just sit there
+                sticky: false,
+                // (int | optional) the time you want it to be alive for before fading out
+                time: 8000,
+                // (string | optional) the class name you want to apply to that specific message
+                class_name: 'my-sticky-class'
+            });
+
+            return false;
+
+
+        });
+    </script>
+    <script type="text/javascript">
+        $('#printInvoice').click(function(){
+            Popup($('.invoice')[0].outerHTML);
+            function Popup(data)
+            {
+                window.print();
+                return true;
+            }
+        });
+    </script>
+{% endblock %}
