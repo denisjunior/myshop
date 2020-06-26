@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 import json
 from django.http import JsonResponse
+from django.db.models import F
 
 from django.core.serializers import serialize
 # Create your views here.
@@ -16,7 +17,7 @@ def index(request):
         pk = request.GET.get("id", None)
         if  Produit.objects.filter(id = pk).exists():
             produit = Produit.objects.get(pk=pk)
-            return JsonResponse({"prix":produit.prixVente}, status=200)
+            return JsonResponse({"price":produit.prixVente,"quantite":produit.quantite}, status=200)
         else:
             # if nick_name not found, then user can create a new friend.
             return JsonResponse({"valid": True}, status=200)
@@ -44,35 +45,6 @@ def categorie(request):
     return render(request, 'shop/produit.html', locals())
 
 @login_required
-def entreStock(request):
-    cate = Categorie.objects.all()
-    categori = Categorie.objects.all()
-    produit = Produit.objects.all()
-    entre = Entre.objects.all()
-
-    if request.method == 'POST':
-        lib = request.POST.get('prodE')
-        quantite  = request.POST.get('qtE')
-
-        createEntre = Entre.objects.create(qtE= quantite,
-
-                                           prodE= Produit.objects.get(id=lib),
-                                           )
-    return render(request, 'shop/produit.html', locals())
-
-# @login_required
-# def updateCategorie(request, id=None):
-#
-#     modif= get_object_or_404(Categorie, id=id)
-#     catForm = CategorieForm(request.POST or None, instance=modif)
-#     if catForm.is_valid():
-#         modif = catForm.save(commit=False)
-#         modif.save()
-#         catForm = CategorieForm
-#         return redirect(categorie)
-#     return render(request, 'shop/produit.html', locals())
-
-@login_required
 def modifCateg(request, id):
     if request.method == "POST":
         modif = Categorie.objects.get(id=id)
@@ -85,7 +57,17 @@ def modifCateg(request, id):
     else:
         modif = get_object_or_404(Categorie, pk=id)
         return render(request,'shop/modification.html' , locals())
-
+# @login_required
+# def updateCategorie(request, id=None):
+#
+#     modif= get_object_or_404(Categorie, id=id)
+#     catForm = CategorieForm(request.POST or None, instance=modif)
+#     if catForm.is_valid():
+#         modif = catForm.save(commit=False)
+#         modif.save()
+#         catForm = CategorieForm
+#         return redirect(categorie)
+#     return render(request, 'shop/produit.html', locals())
 
 # CRUD PRODUITS
 @login_required
@@ -114,6 +96,56 @@ def produits(request):
                                             cateProd    = Categorie.objects.get(id=lacateg) )
     return render(request, 'shop/produit.html', locals())
 
+
+@login_required
+def entreStock(request):
+    cate = Categorie.objects.all()
+    categori = Categorie.objects.all()
+    produit = Produit.objects.all()
+    entre = Entre.objects.all()
+
+    if request.method == 'POST':
+        lib = request.POST.get('prodE')
+        quantity  = request.POST.get('qtE')
+        val = Produit.objects.get(id=lib)
+        qt  = val.quantite
+
+        createEntre = Entre.objects.create(qtE= quantity,
+                                           prodE= Produit.objects.get(id=lib),
+                                           qtAvant= qt,
+                                           )
+
+        new = Produit.objects.get(id=lib)
+        new.quantite = F('quantite') + int(quantity)
+        new.save()
+
+
+    return render(request, 'shop/produit.html', locals())
+@login_required
+def fournisseurs(request):
+    if request.method == 'POST':
+        name = request.POST.get('Nfour')
+        prenom = request.POST.get('Pfour')
+        adr = request.POST.get('adrfour')
+        phone = request.POST.get('tel')
+        email = request.POST.get('mail')
+
+        enregFournisseur = Fournisseur(
+            nomF=name,
+            prenomF=prenom,
+            adresseF=adr,
+            telephone=phone,
+            mail=email,
+        )
+
+        enregFournisseur.save()
+        messages.add_message(request, messages.INFO, 'Le fournisseur a été enregistrée avec succès')
+        return redirect('addFournisseur')
+    else:
+        formAlerte = FournisseurForm
+    return render(request, 'shop/fournisseur.html', locals())
+
+
 @login_required
 def vente(request):
     if request.method == 'POST':
@@ -127,6 +159,7 @@ def vente(request):
         total      = data.get('caisse')[0].get('total')
         totalaPaye = data.get('caisse')[0].get('totalPaye')
         print(client,reduction,remi,total,totalaPaye)
+        print(data['produit'])
 
         new = Vente.objects.create(
             SomRemise   =client,
@@ -136,25 +169,43 @@ def vente(request):
             monnaiRemise=remi
         )
         #print(new)
-        facture = Facture()
-
-        for val in data['produit']:
-            libelle=val.get('libelleprod')
-            qte=val.get('quantite')
-            pu=val.get('prix')
-            pk=val.get('id')
-            print(libelle,qte,pu,pk)
-
-            pro = Produit.objects.get(id=pk)
-
-            facture.qteAchete = qte
-            facture.produitId = pro
-            facture.venteId   = new
+        facture = Facture.objects.create(
+            venteId=new
+        )
         facture.save()
 
+        for val in data['produit']:
+            libelle     = val.get('libelleprod')
+            qte         = val.get('quantite')
+            pu          = val.get('prix')
+            pk          = val.get('id')
+            print(libelle, qte, pu, pk)
+            pro         = Produit.objects.get(id=pk)
+            pro.quantite = F('quantite') - int(qte)
+            pro.save()
+
+            facligne    = Facture_Ligne.objects.create(
+                        qteAchete = qte,
+                        produitId = pro,
+                        factureId = Facture.objects.get(id=facture)
+            )
+            facligne.save()
+        editeFact = Facture_Ligne.objects.filter(factureId_id=facture)
         print(data)
     return render(request, 'shop/facture.html', locals())
 
+@login_required
+def detailFact(request, id):
+    modif = get_object_or_404(Facture, id=id)
+    listfacture = Facture_Ligne.objects.filter(factureId_id=id)
+
+    return render(request, 'shop/detailFacture.html', locals())
+
+#### liste des factures ##########
+@login_required
+def facture(request):
+    lafacture   = Facture.objects.all()
+    return render(request, 'shop/listeFacture.html', locals())
 #################les views qui permettent de traité la page du magasinier#############################
 @login_required
 def index2(request):
@@ -234,7 +285,7 @@ def entreStock2(request):
     return render(request, 'shop/produit2.html', locals())
 
 @login_required
-def fournisseurs(request):
+def fournisseurs2(request):
     if request.method == 'POST':
         name = request.POST.get('Nfour')
         prenom = request.POST.get('Pfour')
@@ -255,7 +306,7 @@ def fournisseurs(request):
         return redirect('addFournisseur')
     else:
         formAlerte = FournisseurForm
-    return render(request, 'shop/fournisseur.html', locals())
+    return render(request, 'shop/fournisseur2.html', locals())
 
 ############## les views qui permettent de traiter les pages de la caissiere#####################
 
@@ -295,24 +346,46 @@ def vente1(request):
             monnaiRemise=remi
         )
         #print(new)
-        facture = Facture()
+        facture = Facture.objects.create(
+            venteId=new
+        )
+        facture.save()
 
         for val in data['produit']:
-            libelle=val.get('libelleprod')
-            qte=val.get('quantite')
-            pu=val.get('prix')
-            pk=val.get('id')
-            print(libelle,qte,pu,pk)
-
+            libelle = val.get('libelleprod')
+            qte = val.get('quantite')
+            pu = val.get('prix')
+            pk = val.get('id')
+            print(libelle, qte, pu, pk)
             pro = Produit.objects.get(id=pk)
 
-            facture.qteAchete = qte
-            facture.produitId = pro
-            facture.venteId   = new
-        facture.save()
+            facligne = Facture_Ligne.objects.create(
+                qteAchete=qte,
+                produitId=pro,
+                factureId=Facture.objects.get(id=facture)
+            )
+            facligne.save()
 
         print(data)
     return render(request, 'shop/facture1.html', locals())
+
+@login_required
+def detailFact1(request, id):
+    modif = get_object_or_404(Facture, id=id)
+    listfacture = Facture_Ligne.objects.filter(factureId_id=id)
+
+    return render(request, 'shop/detailFacture1.html', locals())
+
+#### liste des factures ##########
+@login_required
+def facture1(request):
+    lafacture   = Facture.objects.all()
+    return render(request, 'shop/listeFacture1.html', locals())
+#########################################################################
+
+@login_required
+def stats(request):
+    return render(request, 'shop/statistique.html')
 
 
 

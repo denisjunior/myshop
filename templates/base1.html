@@ -26,7 +26,7 @@
     <link href="{% static 'assets/fontawesome/css/svg-with-js.min.css' %}" rel="stylesheet" />
     <link href="{% static 'assets/fontawesome/css/solid.min.css' %}" rel="stylesheet" />
     <!-- PAGE LEVEL STYLES-->
-     <!-- PLUGINS STYLES-->
+    <!-- PLUGINS STYLES-->
     <link href="{% static 'assets/vendors/dataTables/datatables.min.css' %}" rel="stylesheet" />
     <!-- THEME STYLES-->
     <link href="{% static 'assets/css/main.min.css' %}" rel="stylesheet" />
@@ -74,7 +74,7 @@
                         <div class="dropdown-header">
 
                             <div>
-                                <h5 class="font-strong text-white">Caissier</h5>
+                                <h5 class="font-strong text-white"></h5>
                                 <div>
                                     <span class="admin-badge mr-3"><i class="ti-alarm-clock mr-2"></i>30m.</span>
                                     <span class="admin-badge"><i class="ti-lock mr-2"></i>Mode sécurisé</span>
@@ -106,8 +106,8 @@
 
 
                 <li>
-                    <a href="#"><i class="sidebar-item-icon fa fa-chart-pie"></i>
-                        <span class="nav-label">INVENTAIRES</span>
+                    <a href="{% url 'facliste1' %}"><i class="sidebar-item-icon fa fa-chart-pie"></i>
+                        <span class="nav-label">FACTURES</span>
                     </a>
                 </li>
 
@@ -118,11 +118,13 @@
     <div class="content-wrapper">
         <!-- START PAGE CONTENT-->
         <div class="page-content fade-in-up">
+            <div class="ibox">
+                <div class="ibox-body">
+                    {% block content %}
+                    {% endblock %}
 
-            {% block content %}
-            {% endblock %}
-
-
+                </div>
+            </div>
         </div>
         <!-- END PAGE CONTENT-->
         <footer class="page-footer">

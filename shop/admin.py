@@ -9,5 +9,6 @@ admin.site.register(Entre)
 admin.site.register(Client)
 admin.site.register(Facture)
 admin.site.register(TypeUser)
+admin.site.register(Facture_Ligne)
 
 # Register your models here.

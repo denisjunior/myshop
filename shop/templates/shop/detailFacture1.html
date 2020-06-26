@@ -1,0 +1,46 @@
+{% extends 'base1.html' %}
+{% block content %}
+    <!-- datatable approvisionnement -->
+    <div class="page-content fade-in-up">
+        <h5 class="font-strong mb-4">Détails de la facture N¤ {{ modif.id }}</h5>
+        <div class="flexbox mb-4">
+            <div class="flexbox">
+
+            </div>
+            <div class="input-group-icon input-group-icon-left mr-3">
+                <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
+                <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Rechercher ...">
+            </div>
+        </div>
+        <div class="table-responsive row">
+            <table class="table table-bordered table-hover" id="datatable">
+                <thead class="thead-default thead-lg">
+                <tr>
+                    <th>Produits</th>
+                    <th>Quantité</th>
+                    <th>Prix Unitaire</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for fac in listfacture %}
+                    <tr>
+                        <td>{{ fac.produitId.libelleProd }}</td>
+                        <td>{{  fac.qteAchete}}</td>
+                        <td>{{ fac.produitId.prixVente}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h4> Date: <b>{{ modif.dateFacture }} </b></h4>
+        <h4> Montant encaissé: <b>{{ modif.venteId.SomRemise }}FCFA</b></h4>
+        <h4> Montant rendue: <b>{{ modif.venteId.monnaiRemise }} FCFA </b></h4>
+        <h4> Vendeur: <b>eventeutilisateur </b></h4>
+        <h4> Total de la Facture: <b>{{ modif.venteId.totalFactur }} FCFA </b> </h4>
+        <h4> Remise: <b>{{ modif.venteId.remise }}  FCFA </b></h4>
+        <h4> Total payé: <b> {{ modif.venteId.totalPaye }} FCFA </b> </h4>
+    </div>
+
+    <!-- fin du datatables -->
+{% endblock %}

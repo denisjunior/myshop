@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <body>
     <div class="nav notify-row" id="top_menu">
         <!--  notification start -->
         <ul class="nav top-menu">
@@ -70,16 +69,16 @@
                         </tr>
                         </thead>
                         <tbody>
-                        {% for data in facture %}
-                            {% if data.id == facture.produitId.id and data.id == facture.venteId.id %}
-                                <tr>
-                                    <td class="no">04</td>
-                                    <td class="text-left"><h3>{{ facture.produitId.libelleProd }}</h3></td>
-                                    <td class="unit">$0.00</td>
-                                    <td class="qty">100</td>
-                                    <td class="total">$0.00</td>
-                                </tr>
-                            {% endif %}
+                        {% for val in editeFact %}
+
+                            <tr>
+                                <td class="no">{{ val.factureId.id }}</td>
+                                <td class="text-left"><h3>{{ val.produitId.libelleProd }}</h3></td>
+                                <td class="unit">{{ val.qteAchete }}</td>
+                                <td class="qty">{{ val.produitId.prixVente }}</td>
+                                <td class="total">{{ val.factureId.venteId.totalFactur }}</td>
+                            </tr>
+
                         {% endfor %}
                         </tbody>
                         <tfoot>
@@ -114,8 +113,6 @@
             <div></div>
         </div>
     </div>
-
-    </body>
 
 {% endblock %}
 {% block script %}

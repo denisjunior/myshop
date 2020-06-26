@@ -38,11 +38,12 @@ class Fournisseur(models.Model):
 
 class Entre(models.Model):
     qtE          = models.IntegerField(default=None)
+    qtAvant      = models.IntegerField(default=None)
     dateE        = models.DateField(auto_now=True)
     prodE        = models.ForeignKey(Produit, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.dateE
+    def __int__(self):
+        return self.qtE
 
 class Client(models.Model):
     nomClient    = models.CharField(max_length=100)
@@ -53,7 +54,7 @@ class Client(models.Model):
         return self.nomClient
 
 class Vente(models.Model):
-    dateVente  = models.DateField(null=True)
+    dateVente  = models.DateField(auto_now=True)
     remise     = models.FloatField(default=None)
     totalPaye  = models.FloatField(default=None)
     totalFactur= models.FloatField(default=None)
@@ -64,12 +65,22 @@ class Vente(models.Model):
         return self.totalFactur
 
 class Facture(models.Model):
-    produitId   = models.ForeignKey(Produit, on_delete=models.CASCADE)
+    dateFacture   = models.DateField(auto_now=True)
     venteId     = models.ForeignKey(Vente, on_delete=models.CASCADE)
+
+
+    def __int__(self):
+        return self.id
+
+class Facture_Ligne(models.Model):
+    datefac = models.DateField(auto_now=True)
+    produitId   = models.ForeignKey(Produit, on_delete=models.CASCADE)
     qteAchete   = models.IntegerField(default=None)
+    factureId   = models.ForeignKey(Facture, on_delete=models.CASCADE)
 
     def __int__(self):
         return self.qteAchete
+
 
 
 

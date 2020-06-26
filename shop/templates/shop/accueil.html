@@ -1,162 +1,158 @@
 {% extends "base.html" %}
 {% block content %}
+    <div class="row">
+        <div class="col-md-4">
+            <div class="col-sm-10"><h3>Veuillez choisir un produit à vendre</h3></div><br>
+            <form name="" method="post" autocomplete="off" class="form-horizontal style-form" id="ajoutPro">
+                <div class="form-group mb-4 row">
+                    <label class="col-sm-2 col-form-label">Nom du produit</label>
+                    <select class="form-control col-sm-10" name="libeProd" id="libelleProd">
+                        <optgroup class="col-sm-8">
+                            <option value="" selected="selected">-selectionner-</option>
+                            {% for pro in produit %}
+                                <option  value="{{pro.id}}">
+                                    {{pro.libelleProd}}
+                                </option>
+                            {% endfor %}
+                        </optgroup>
+                    </select>
 
-    <div class="ibox">
-        <div class="ibox-body">
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="col-sm-10"><h3>Veuillez choisir un produit à vendre</h3></div><br>
-                    <form name="" method="post" autocomplete="off" class="form-horizontal style-form" id="ajoutPro">
-                        <div class="form-group mb-4 row">
-                            <label class="col-sm-2 col-form-label">Nom du produit</label>
-                            <select class="form-control col-sm-10" name="libeProd" id="libelleProd">
-                                <optgroup class="col-sm-8" >
-                                    {% for pro in produit %}
-                                        <option  value="{{pro.id}}" selected>
-                                            {{pro.libelleProd}}
-                                        </option>
-
-                                    {% endfor %}
-                                </optgroup>
-                            </select>
-
-
-                        </div>
-                        <div class="form-group mb-4 row">
-                            <label class="col-sm-2 col-form-label">Quantite</label>
-                            <div class="col-sm-10">
-                                <input type="number" id="quatite" name="quantite" required="required" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="form-group mb-4 row">
-                            <label class="col-sm-2 col-form-label">Quantite ajoutable à la facture</label>
-                            <div class="col-sm-10">
-                                <input class="form-control" id="stock" type="text"  disabled="">
-                            </div>
-                        </div>
-                        <div class="col-sm-7 ml-sm-auto">
-                            <button type="submit" id="btn"   class="btn btn-primary">valider</button>
-                            <button type="reset" class="btn btn-default">annuler</button>
-                        </div>
-                        <input type="text"  id="prixU" name="prixVente" value="{{ prixVente }}" hidden/>
-                    </form>
-                </div>
-
-                <div class="col-md-8">
-                    <div class=""><h3 style="alignment: center">Liste des produits</h3></div><br>
-
-                    <!-- datatable catégorie -->
-                    <div class="page-content fade-in-up">
-                        <div class="flexbox mb-4">
-                            <div class="input-group-icon input-group-icon-left mr-3">
-                                <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
-                                <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Search ...">
-                            </div>
-                        </div>
-                        <div class="table-responsive row">
-                            <table class="table table-bordered table-hover" id="datatable">
-                                <thead class="thead-default thead-lg">
-                                <tr>
-                                    <th>Nom</th>
-                                    <th>Quantité</th>
-                                    <th>Prix unitaire</th>
-                                    <th>Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="row">
-
-                        <a data-toggle="modal" data-target="#modalModif"><button style="margin-left:200%" class="btn btn-primary">Valider la facture</button></a>
-                    </div>
-
-                    <!-- Modal -->
-                    <div class="modal fade" id="modalModif" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Paiement du client</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row"><div class=""><h4>Total de la facture : <b><span id="peye2">0</span> FCFA </b></h4></div></div>
-                                    <br>
-
-                                    <div class="row"> <div> <h4>Total à payer : <b><span id="to2">0</span> FCFA </b></h4></div></div>
-                                    <br><br>
-
-                                    <form class="form-horizontal style-form" id="caisse" method="post" autocomplete="off">
-                                        {% csrf_token %}
-
-                                        <input type="text" name="formulaire" id="formulaire" style="display: none">
-
-                                        <div class="form-group mb-4 row">
-                                            <label class="col-sm-2 col-form-label">Remise</label>
-                                            <div class="col-sm-10">
-                                                <input type="text" id="remise" name="remise" onkeyup="remiz()" class="form-control" />
-                                            </div>
-                                        </div>
-                                        <div class="form-group mb-4 row">
-                                            <label class="col-sm-2 col-form-label">Somme remise par le client</label>
-                                            <div class="col-sm-10">
-                                                <input class="form-control" id="client" onkeyup="calcul()" type="text">
-                                            </div>
-                                        </div>
-                                        <div class="form-group mb-4 row">
-                                            <label class="col-sm-2 col-form-label">Monnaie à remettre au client</label>
-                                            <div class="col-sm-10">
-                                                <input class="form-control" id="monnaie" type="text"  disabled="disabled">
-                                            </div>
-                                        </div>
-                                        <div class="form-group mb-4 row">
-                                            <label class="col-sm-2 col-form-label">Monnaie remise au client</label>
-                                            <div class="col-sm-10">
-                                                <input class="form-control" id="remi" type="text" onkeyup="calcul2()" disabled="disabled">
-                                            </div>
-                                        </div>
-                                        <div class="form-group mb-4 row">
-                                            <label class="col-sm-2 col-form-label">Restant à remettre au client</label>
-                                            <div class="col-sm-10">
-                                                <input class="form-control" id="restant" type="text" disabled="disabled">
-                                            </div>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="submit" onclick="impression()" class="btn btn-primary">Valider</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- fin modal-->
 
                 </div>
-            </div><br>
-            <div class="row mb-4" >
-                <div class="col-sm-10" >
-                    <h4>Total de la facture: <b><span id="peye">0</span> FCFA </b></h4>
+                <div class="form-group mb-4 row">
+                    <label class="col-sm-2 col-form-label">Quantite</label>
+                    <div class="col-sm-10">
+                        <input type="number" id="quatite" name="quantite" required="required" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group mb-4 row">
+                    <label class="col-sm-2 col-form-label">Quantite ajoutable à la facture</label>
+                    <div class="col-sm-10">
+                        <input class="form-control" id="stock" type="text"  disabled="">
+                    </div>
+                </div>
+                <div class="col-sm-7 ml-sm-auto">
+                    <button type="submit" id="btn"   class="btn btn-primary">valider</button>
+                    <button type="reset" class="btn btn-default">annuler</button>
+                </div>
+                <input type="text"  id="prixU" name="prixVente" value="{{ prixVente }}" hidden/>
+            </form>
+        </div>
+
+        <div class="col-md-8">
+            <div class=""><h3 style="alignment: center">Liste des produits</h3></div><br>
+
+            <!-- datatable vente -->
+            <div class="page-content fade-in-up">
+                <div class="flexbox mb-4">
+                    <div class="input-group-icon input-group-icon-left mr-3">
+                        <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
+                        <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Search ...">
+                    </div>
+                </div>
+                <div class="table-responsive row">
+                    <table class="table table-bordered table-hover" id="datatable">
+                        <thead class="thead-default thead-lg">
+                        <tr>
+                            <th>Nom</th>
+                            <th>Quantité</th>
+                            <th>Prix unitaire</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
-            <div class="row mb-4">
-                <div class="col-sm-10">
-                    <h4>Total à payer : <b><span id="to">0</span> FCFA </b></h4>
-                </div>
+
+            <div class="row">
+                <a data-toggle="modal" data-target="#modalModif"><button style="margin-left:200%" class="btn btn-primary">Valider la facture</button></a>
             </div>
         </div>
 
+        <!-- Modal -->
+        <div class="modal fade" id="modalModif" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Paiement du client</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row"><div class=""><h4>Total de la facture : <b><span id="peye2">0</span> FCFA </b></h4></div></div>
+                        <br>
+
+                        <div class="row"> <div> <h4>Total à payer : <b><span id="to2">0</span> FCFA </b></h4></div></div>
+                        <br><br>
+
+                        <form class="form-horizontal style-form" id="caisse" method="post" autocomplete="off">
+                            {% csrf_token %}
+
+                            <input type="text" name="formulaire" id="formulaire" style="display: none">
+
+                            <div class="form-group mb-4 row">
+                                <label class="col-sm-2 col-form-label">Remise</label>
+                                <div class="col-sm-10">
+                                    <input type="text" id="remise" name="remise" onkeyup="remiz()" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group mb-4 row">
+                                <label class="col-sm-2 col-form-label">Somme remise par le client</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="client" onkeyup="calcul()" type="text">
+                                </div>
+                            </div>
+                            <div class="form-group mb-4 row">
+                                <label class="col-sm-2 col-form-label">Monnaie à remettre au client</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="monnaie" type="text"  disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="form-group mb-4 row">
+                                <label class="col-sm-2 col-form-label">Monnaie remise au client</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="remi" type="text" onkeyup="calcul2()" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="form-group mb-4 row">
+                                <label class="col-sm-2 col-form-label">Restant à remettre au client</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="restant" type="text" disabled="disabled">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" onclick="impression()" class="btn btn-primary">Valider</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- fin modal-->
+
+
+    </div><br>
+    <div class="row mb-4" >
+        <div class="col-sm-10" >
+            <h4>Total de la facture: <b><span id="peye">0</span> FCFA </b></h4>
+        </div>
     </div>
+
+    <div class="row mb-4">
+        <div class="col-sm-10">
+            <h4>Total à payer : <b><span id="to">0</span> FCFA </b></h4>
+        </div>
+    </div>
+
 {% endblock %}
 {% block script %}
     <script type="text/javascript">
-        var nom,pu,quantity,pk;
+        var nom,pu,quantity,pk,qt,newqt;
         var caisseform = document.getElementById('caisse');
         var form = document.querySelector('form');
         var facture={"produit":[],"caisse":[]};
@@ -171,7 +167,7 @@
                 data: {"id": id},
                 success: function (response) {
                     // if not valid user, alert the user
-                    if(!response["prix"]){
+                    if(!response["price"]){
                         alert("hello!!!!");
                         //alert(response);
                         var id = $("select");
@@ -179,10 +175,15 @@
                         id.focus()
                     }
                     pu=response
-                    console.log(pu)
+                    console.log(pu['price'])
                     console.log(response)
-                },
 
+                    document.getElementById('stock').value= parseInt(pu['quantite'])
+
+                    qt = document.getElementById('stock').value
+                    console.log(qt)
+
+                },
                 error: function (response) {
                     console.log(response)
                 }
@@ -196,32 +197,47 @@
 
         var totaux=0;
         var toto=0;
-        var tab=[]
+        var somm=0;
 
-        $(document).on('submit', '#ajoutPro', function(event) {
+
+        $(document).on('submit', '#ajoutPro', function(event)
+        {
             var t = $('#datatable').DataTable();
+            var rest;
             event.preventDefault();
 
             let form = $(this);
             var modifier = '<button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modalModif">modifier</button>'
             var supprimer = '<button type="reset" class="btn btn-danger">supprimer</button>'
             quantity =document.getElementById('quatite').value
-            if(quantity<0){
+            if(quantity<0)
+            {
                 alert('vous avez choisit une quantité de produit inférieur à zéro');
-            }else {
-                totaux += (quantity*parseFloat(Object.values(pu)))
-                toto += (quantity*parseFloat(Object.values(pu)))
+            }
+            else if(parseInt(quantity)> parseInt(qt))
+            {
+                alert('vous avez choisit une quantité de produit supérieur à celle en stock');
+            }
+            else
+            {
+                totaux += (quantity*parseFloat(pu['price']))
+                toto += (quantity*parseFloat(pu['price']))
                 t.row.add( [
                     nom,
                     form.find('[name="quantite"]').val(),
-                    Object.values(pu),
+                    parseFloat(pu['price']),
                     modifier + supprimer
                 ] ).draw( false );
+                document.getElementById('quatite').value=""
+                document.getElementById('stock').value=""
+                rest    = (parseInt(qt) - parseInt(quantity))
+                newqt   = rest;
+                console.log(newqt)
                 b={
                     "libelleprod":nom,
                     "quantite":quantity,
-                    "prix":Object.values(pu),
-                    "id":pk
+                    "prix":parseFloat(pu['price']),
+                    "id":pk,
                 }
                 facture.produit.push(b)
                 console.log(facture)
@@ -230,6 +246,8 @@
             document.getElementById('peye').innerHTML=totaux;
             document.getElementById('to').innerHTML=toto;
             document.getElementById('peye2').innerHTML=totaux;
+            document.getElementById('to2').innerHTML=toto;
+
 
         } );
 
@@ -245,6 +263,13 @@
                     document.getElementById('monnaie').value = parseFloat(document.getElementById('client').value)-parseFloat(totaux)
                     document.getElementById('remi').disabled = false
                     document.getElementById('restant').value = parseFloat(document.getElementById('client').value)-parseFloat(totaux)
+
+                }
+                if((parseFloat(document.getElementById('remise').value) > 0) && parseFloat(document.getElementById('client').value) >= parseFloat(totaux))
+                {
+                    document.getElementById('monnaie').value = parseFloat(document.getElementById('client').value)-parseFloat(somm)
+                    document.getElementById('remi').disabled = false
+                    document.getElementById('restant').value = parseFloat(document.getElementById('client').value)-parseFloat(somm)
 
                 }
                 if(parseFloat(document.getElementById('client').value) < parseFloat(totaux))
@@ -304,38 +329,7 @@
                 if(document.getElementById('remise').value == "")
                 {
                     document.getElementById('client').disabled = false
-                    return totaux;
-                }else {
-                    if (parseFloat(document.getElementById('remise').value)>=0)
-                    {
-                        if (parseFloat(document.getElementById('remise').value) <= totaux)
-                        {
-                            document.getElementById('client').disabled = false
-                            somm = (toto - parseFloat(document.getElementById('remise').value))
-                            console.log(somm)
-                            return somm;
 
-                        }else {
-                            document.getElementById('client').disabled = true
-                            return totaux;
-                        }
-                    }
-                }
-
-                if(parseFloat(document.getElementById('remise').value)>=0)
-                {
-                    document.getElementById('to').innerHTML=totaux;
-                    document.getElementById('to2').innerHTML=somm;
-                    document.getElementById('client').innerHTML=""
-                    document.getElementById('monnaie').innerHTML=""
-                    document.getElementById('remi').innerHTML=""
-                    document.getElementById('remi').disabled= true
-                    document.getElementById('restant').value = ""
-
-                }
-
-                if(document.getElementById('remise').value == "")
-                {
                     document.getElementById('to').innerHTML=toto;
                     document.getElementById('to2').innerHTML=toto;
                     document.getElementById('client').value = ""
@@ -344,6 +338,28 @@
                     document.getElementById('remi').disabled= true
                     document.getElementById('restant').value = ""
 
+                }else {
+                    if (parseFloat(document.getElementById('remise').value)>=0)
+                    {
+                        if (parseFloat(document.getElementById('remise').value) <= totaux)
+                        {
+                            document.getElementById('client').disabled = false
+                            somm = (toto - parseFloat(document.getElementById('remise').value))
+                            console.log(somm)
+
+                            document.getElementById('to').innerHTML=totaux;
+                            document.getElementById('to2').innerHTML=somm;
+                            document.getElementById('client').innerHTML=""
+                            document.getElementById('monnaie').innerHTML=""
+                            document.getElementById('remi').innerHTML=""
+                            document.getElementById('remi').disabled= true
+                            document.getElementById('restant').value = ""
+
+                        }else {
+                            document.getElementById('client').disabled = true
+                            return totaux;
+                        }
+                    }
                 }
             }
         }

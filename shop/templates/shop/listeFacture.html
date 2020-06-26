@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+    <!-- datatable approvisionnement -->
+    <div class="page-content fade-in-up">
+
+        <h5 class="font-strong mb-4">LISTE DES FACTURES</h5>
+        <div class="flexbox mb-4">
+            <div class="flexbox">
+
+            </div>
+            <div class="input-group-icon input-group-icon-left mr-3">
+                <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
+                <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Rechercher ...">
+            </div>
+        </div>
+        <div class="table-responsive row">
+            <table class="table table-bordered table-hover" id="datatable">
+                <thead class="thead-default thead-lg">
+                <tr>
+                    <th>Numéro facture</th>
+                    <th>Total Facture</th>
+                    <th>Remise</th>
+                    <th>Montant Encaissé</th>
+                    <th>Monnaie Rendue</th>
+                    <th>date</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for fa in lafacture %}
+                    <tr>
+                        <td>{{ fa.id}}</td>
+                        <td>{{ fa.dateFacture}}</td>
+                        <td>{{ fa.venteId.remise }}</td>
+                        <td>{{ fa.venteId.SomRemise }}</td>
+                        <td>{{ fa.venteId.monnaiRemise }}</td>
+                        <td>{{ fa.dateFacture }}</td>
+
+                        <td>
+                            <a href="{% url 'facturedetail' fa.id %}" title="détail">
+                                <button class="btn btn-primary" type="submit"><i class="fa fa-eye"></i>Détail</button>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- fin du datatables -->
+{% endblock %}

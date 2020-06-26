@@ -3,462 +3,459 @@
 
 {% block content %}
     <div class="col-lg-12">
+        <!-- En tête du tab-->
+        <div class="ibox-head">
+            <ul class="nav nav-pills nav-pills-rounded nav-pills-air">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#tab-2-1" data-toggle="tab">Catégorie</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#tab-2-2" data-toggle="tab">Produit</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#tab-2-3" data-toggle="tab">Approvisionnement</a>
+                </li>
+            </ul>
+        </div>
+        <!-- Fin en tête du tab-->
 
-        <div class="ibox">
-            <!-- En tête du tab-->
-            <div class="ibox-head">
-                <ul class="nav nav-pills nav-pills-rounded nav-pills-air">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#tab-2-1" data-toggle="tab">Catégorie</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#tab-2-2" data-toggle="tab">Produit</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#tab-2-3" data-toggle="tab">Approvisionnement</a>
-                    </li>
-                </ul>
-            </div>
-            <!-- Fin en tête du tab-->
+        <!-- Début du corps-->
+        <div class="ibox-body">
+            <div class="tab-content">
+                <!--Début de la catégorie-->
+                <div class="tab-pane fade show active" id="tab-2-1">
+                    <div class="col-sm-8 ml-sm-auto">
+                        <h3>Ajout d'une Nouvelle Categorie de Produit</h3>
+                    </div><br>
+                    <div>
+                        <form action="{% url 'addCategorie' %}" method="post" autocomplete="off">
+                            {% csrf_token %}
+                            <div class="form-group mb-4 row">
+                                <label class="col-sm-2 col-form-label">Nom de la catégorie</label>
 
-            <!-- Début du corps-->
-            <div class="ibox-body">
-                <div class="tab-content">
-                    <!--Début de la catégorie-->
-                    <div class="tab-pane fade show active" id="tab-2-1">
-                        <div class="col-sm-8 ml-sm-auto">
-                            <h3>Ajout d'une Nouvelle Categorie de Produit</h3>
-                        </div><br>
-                        <div>
-                            <form action="{% url 'index2' %}" method="post" autocomplete="off">
-                                {% csrf_token %}
-                                <div class="form-group mb-4 row">
-                                    <label class="col-sm-2 col-form-label">Nom de la catégorie</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="libelleCate" id="libelleCate" placeholder="" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="col-sm-7 ml-sm-auto">
+                                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                    <button type="reset" class="btn btn-secondary">Annuler</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
 
-                                    <div class="col-sm-8">
-                                        <input type="text" name="libelleCate" id="libelleCate" placeholder="" class="form-control" required>
+                    {#                        <!-- Modal categorie -->#}
+                    {#                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">#}
+                    {#                            <div class="modal-dialog">#}
+                    {#                                <div class="modal-content">#}
+                    {#                                    <div class="modal-header">#}
+                    {#                                        <h5 class="modal-title" id="exampleModalLabel">Modification</h5>#}
+                    {#                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+                    {#                                            <span aria-hidden="true">&times;</span>#}
+                    {#                                        </button>#}
+                    {#                                    </div>#}
+                    {#                                    <div class="modal-body">#}
+                    {#                                        <form action="{% if update == True%}{% url 'updateCategorie' categorie.id %}{% endif %}" name="modifCate" method="post" autocomplete="off" id="modifCate" >#}
+                    {#                                            {% csrf_token %}#}
+                    {#                                            <div class="form-group"><label class="control-label">Libellé catégorie</label>#}
+                    {##}
+                    {#                                                <div class="">#}
+                    {#                                                    <input type="text" name="libelleCateg" id="libelleCateg"  class="form-control" required>#}
+                    {#                                                </div>#}
+                    {#                                            </div>#}
+                    {#                                            <div class="modal-footer">#}
+                    {#                                                <button type="submit" class="btn btn-primary">Valider</button>#}
+                    {#                                            </div>#}
+                    {#                                        </form>#}
+                    {#                                    </div>#}
+                    {##}
+                    {#                                </div>#}
+                    {#                            </div>#}
+                    {#                        </div>#}
+                    {#                        <!-- fin modal-->#}
+                    <hr style="background: black">
+                    <!-- datatable catégorie -->
+                    <div class="page-content fade-in-up">
+                        <div class="ibox">
+                            <div class="ibox-body">
+                                <h5 class="font-strong mb-4">LISTE DES CATEGORIES</h5>
+                                <div class="flexbox mb-4">
+                                    <div class="flexbox">
+
+                                    </div>
+                                    <div class="input-group-icon input-group-icon-left mr-3">
+                                        <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
+                                        <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Rechercher ...">
                                     </div>
                                 </div>
-                                <div class="modal-footer">
-                                    <div class="col-sm-7 ml-sm-auto">
-                                        <button type="submit" class="btn btn-primary">Enregistrer</button>
-                                        <button type="reset" class="btn btn-secondary">Annuler</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-
-{#                        <!-- Modal categorie -->#}
-{#                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">#}
-{#                            <div class="modal-dialog">#}
-{#                                <div class="modal-content">#}
-{#                                    <div class="modal-header">#}
-{#                                        <h5 class="modal-title" id="exampleModalLabel">Modification</h5>#}
-{#                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
-{#                                            <span aria-hidden="true">&times;</span>#}
-{#                                        </button>#}
-{#                                    </div>#}
-{#                                    <div class="modal-body">#}
-{#                                        <form action="{% if update == True%}{% url 'updateCategorie' categorie.id %}{% endif %}" name="modifCate" method="post" autocomplete="off" id="modifCate" >#}
-{#                                            {% csrf_token %}#}
-{#                                            <div class="form-group"><label class="control-label">Libellé catégorie</label>#}
-{##}
-{#                                                <div class="">#}
-{#                                                    <input type="text" name="libelleCateg" id="libelleCateg"  class="form-control" required>#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                            <div class="modal-footer">#}
-{#                                                <button type="submit" class="btn btn-primary">Valider</button>#}
-{#                                            </div>#}
-{#                                        </form>#}
-{#                                    </div>#}
-{##}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <!-- fin modal-->#}
-                        <hr style="background: black">
-                        <!-- datatable catégorie -->
-                        <div class="page-content fade-in-up">
-                            <div class="ibox">
-                                <div class="ibox-body">
-                                    <h5 class="font-strong mb-4">LISTE DES CATEGORIES</h5>
-                                    <div class="flexbox mb-4">
-                                        <div class="flexbox">
-
-                                        </div>
-                                        <div class="input-group-icon input-group-icon-left mr-3">
-                                            <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
-                                            <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Rechercher ...">
-                                        </div>
-                                    </div>
-                                    <div class="table-responsive row">
-                                        <table class="table table-bordered table-hover" id="datatable">
-                                            <thead class="thead-default thead-lg">
+                                <div class="table-responsive row">
+                                    <table class="table table-bordered table-hover" id="datatable">
+                                        <thead class="thead-default thead-lg">
+                                        <tr>
+                                            <th>Ref</th>
+                                            <th>Nom</th>
+                                            <th>Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for categorie in cate %}
                                             <tr>
-                                                <th>Ref</th>
-                                                <th>Nom</th>
-                                                <th>Action</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% for categorie in cate %}
-                                                <tr>
-                                                    <td>{{ categorie.id }}</td>
-                                                    <td>{{ categorie.libelleCate }}</td>
-                                                    <td>
-                                                        <a class="btn btn-primary"   name="Modifier"  href="{% url 'modifi' categorie.id %}" value="">Modifier</a>
-                                                        <!-- <a data-toggle="modal" data-target="#exampleModal"  onclick="updateCategorie({{ categorie.id }}</) " title="modifier"> -->
-                                                            <!-- <button class="btn btn-primary" type="submit"><i class="fa fa-pen"></i>Modifier</button> -->
-                                                        <!-- </a> -->
-                                                        <a href="" ><button class="btn btn-danger" type="submit" ><i class="fa fa-trash"></i>Supprimer</button></a>
+                                                <td>{{ categorie.id }}</td>
+                                                <td>{{ categorie.libelleCate }}</td>
+                                                <td>
+                                                    <a class="btn btn-primary"   name="Modifier"  href="{% url 'modifi' categorie.id %}" value="">Modifier</a>
+                                                    <!-- <a data-toggle="modal" data-target="#exampleModal"  onclick="updateCategorie({{ categorie.id }}</) " title="modifier"> -->
+                                                    <!-- <button class="btn btn-primary" type="submit"><i class="fa fa-pen"></i>Modifier</button> -->
+                                                    <!-- </a> -->
+                                                    <a href="" ><button class="btn btn-danger" type="submit" ><i class="fa fa-trash"></i>Supprimer</button></a>
 
-                                                    </td>
-                                                </tr>
-                                            {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                        <!-- fin du datatables -->
                     </div>
-                    <!-- fin de la catégorie -->
+                    <!-- fin du datatables -->
+                </div>
+                <!-- fin de la catégorie -->
 
-                    <!-- debut tab produit-->
-                    <div class="tab-pane fade" id="tab-2-2">
-                        <div class="col-sm-8 ml-sm-auto">
-                            <h3>Ajout d'un Nouveau Produit</h3>
-                        </div><br>
-                        <div>
-                            <form action="{% url 'produit2' %}" method="post" autocomplete="off">
-                                {% csrf_token %}
-                                <div class="form-group mb-4 row">
-                                    <label class="col-sm-2 col-form-label">Catégorie de produit</label>
-                                    <select class="form-control col-sm-8" name="cateProd" id="cateProd">
-                                        <optgroup class="col-sm-8">
-                                            {% for categ in categori %}
-                                                <option value="{{ categ.id }}" {% if categ.id == produit.categorie.id %} selected{% endif %}>
-                                                    {{ categ.libelleCate }}
-                                                </option>
-                                            {% endfor %}
-                                        </optgroup>
+                <!-- debut tab produit-->
+                <div class="tab-pane fade" id="tab-2-2">
+                    <div class="col-sm-8 ml-sm-auto">
+                        <h3>Ajout d'un Nouveau Produit</h3>
+                    </div><br>
+                    <div>
+                        <form action="{% url 'addProduit' %}" method="post" autocomplete="off">
+                            {% csrf_token %}
+                            <div class="form-group mb-4 row">
+                                <label class="col-sm-2 col-form-label">Catégorie de produit</label>
+                                <select class="form-control col-sm-8" name="cateProd" id="cateProd">
+                                    <optgroup class="col-sm-8">
+                                        {% for categ in categori %}
+                                            <option value="{{ categ.id }}" {% if categ.id == produit.categorie.id %} selected{% endif %}>
+                                                {{ categ.libelleCate }}
+                                            </option>
+                                        {% endfor %}
+                                    </optgroup>
 
-                                    </select>
+                                </select>
+                            </div>
+                            <div class="form-group mb-4 row">
+                                <label class="col-sm-2 col-form-label">Nom du produit</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" name="libelleProd" id="libelleProd" placeholder="" class="form-control" required>
                                 </div>
-                                <div class="form-group mb-4 row">
-                                    <label class="col-sm-2 col-form-label">Nom du produit</label>
+                            </div>
+                            <div class="form-group mb-4 row">
+                                <label class="col-sm-2 col-form-label">Quantité du produit</label>
 
-                                    <div class="col-sm-8">
-                                        <input type="text" name="libelleProd" id="libelleProd" placeholder="" class="form-control" required>
+                                <div class="col-sm-8">
+                                    <input type="number" name="quantite" id="quantite" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group mb-4 row">
+                                <label class="col-sm-2 col-form-label">Prix d'achat du produit</label>
+
+                                <div class="col-sm-8">
+                                    <input type="number" name="prixAchat" id="prixAchat" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group mb-4 row">
+                                <label class="col-sm-2 col-form-label">Prix de vente du produit</label>
+
+                                <div class="col-sm-8">
+                                    <input type="number" name="prixVente" id="prixVente" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group mb-4 row">
+                                <label class="col-sm-2 col-form-label">Stock minimum</label>
+
+                                <div class="col-sm-8">
+                                    <input type="number" name="stock" id="stock" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="form-group mb-4 row">
+                                <label class="col-sm-2 col-form-label">Description du produit</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" name="description" id="description" placeholder="" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="col-sm-7 ml-sm-auto">
+                                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                    <button type="reset" class="btn btn-secondary">Annuler</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    {#                        <!-- Modal produit -->#}
+                    {#                        <div class="modal fade" id="modalprod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">#}
+                    {#                            <div class="modal-dialog">#}
+                    {#                                <div class="modal-content">#}
+                    {#                                    <div class="modal-header">#}
+                    {#                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>#}
+                    {#                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+                    {#                                            <span aria-hidden="true">&times;</span>#}
+                    {#                                        </button>#}
+                    {#                                    </div>#}
+                    {#                                    <div class="modal-body">#}
+                    {#                                        <form action="" name="ajoutProd" method="post" autocomplete="off" id="ajoutProd" >#}
+                    {#                                            {% csrf_token %}#}
+                    {#                                            <div class="form-group mb-4 row">#}
+                    {#                                                <label class="col-sm-2 col-form-label">Catégorie de produit</label>#}
+                    {#                                                <select class="form-control col-sm-8" name="cateProd" id="cateProd">#}
+                    {#                                                    <optgroup class="col-sm-8">#}
+                    {#                                                        {% for categ in categori %}#}
+                    {#                                                            <option value="{{ categ.id }}" {% if categ.id == produit.categorie.id %} selected{% endif %}>#}
+                    {#                                                                {{ categ.libelleCate }}#}
+                    {#                                                            </option>#}
+                    {#                                                        {% endfor %}#}
+                    {#                                                    </optgroup>#}
+                    {##}
+                    {#                                                </select>#}
+                    {#                                            </div>#}
+                    {#                                            <div class="form-group mb-4 row">#}
+                    {#                                                <label class="col-sm-2 col-form-label">Nom du produit</label>#}
+                    {##}
+                    {#                                                <div class="col-sm-8">#}
+                    {#                                                    <input type="text" name="libelleProd" id="libeProd" placeholder="" class="form-control" required>#}
+                    {#                                                </div>#}
+                    {#                                            </div>#}
+                    {#                                            <div class="form-group mb-4 row">#}
+                    {#                                                <label class="col-sm-2 col-form-label">Quantité du produit</label>#}
+                    {##}
+                    {#                                                <div class="col-sm-8">#}
+                    {#                                                    <input type="number" name="quantite" id="qtite" class="form-control" required>#}
+                    {#                                                </div>#}
+                    {#                                            </div>#}
+                    {#                                            <div class="form-group mb-4 row">#}
+                    {#                                                <label class="col-sm-2 col-form-label">Prix d'achat du produit</label>#}
+                    {##}
+                    {#                                                <div class="col-sm-8">#}
+                    {#                                                    <input type="number" name="prixAchat" id="prixAch" class="form-control" required>#}
+                    {#                                                </div>#}
+                    {#                                            </div>#}
+                    {#                                            <div class="form-group mb-4 row">#}
+                    {#                                                <label class="col-sm-2 col-form-label">Prix de vente du produit</label>#}
+                    {##}
+                    {#                                                <div class="col-sm-8">#}
+                    {#                                                    <input type="number" name="prixVente" id="prixVen" class="form-control" required>#}
+                    {#                                                </div>#}
+                    {#                                            </div>#}
+                    {#                                            <div class="form-group mb-4 row">#}
+                    {#                                                <label class="col-sm-2 col-form-label">Stock minimum</label>#}
+                    {##}
+                    {#                                                <div class="col-sm-8">#}
+                    {#                                                    <input type="number" name="stock" id="stockProd" class="form-control" required>#}
+                    {#                                                </div>#}
+                    {#                                            </div>#}
+                    {#                                            <div class="form-group mb-4 row">#}
+                    {#                                                <label class="col-sm-2 col-form-label">Description du produit</label>#}
+                    {##}
+                    {#                                                <div class="col-sm-8">#}
+                    {#                                                    <input type="text" name="description" id="descProd" placeholder="" class="form-control" required>#}
+                    {#                                                </div>#}
+                    {#                                            </div>#}
+                    {##}
+                    {##}
+                    {#                                            <div class="modal-footer">#}
+                    {#                                                <button type="submit" class="btn btn-primary">Valider</button>#}
+                    {#                                            </div>#}
+                    {#                                        </form>#}
+                    {#                                    </div>#}
+                    {##}
+                    {#                                </div>#}
+                    {#                            </div>#}
+                    {#                        </div>#}
+                    {#                        <!-- fin modal-->#}
+                    <hr style="background: black">
+                    <!-- datatable produit -->
+                    <div class="page-content fade-in-up">
+                        <div class="ibox">
+                            <div class="ibox-body">
+                                <h5 class="font-strong mb-4">LISTE DES PRODUITS </h5>
+                                <div class="flexbox mb-4">
+                                    <div class="flexbox">
+
+                                    </div>
+                                    <div class="input-group-icon input-group-icon-left mr-3">
+                                        <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
+                                        <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Rechercher ...">
                                     </div>
                                 </div>
-                                <div class="form-group mb-4 row">
-                                    <label class="col-sm-2 col-form-label">Quantité du produit</label>
-
-                                    <div class="col-sm-8">
-                                        <input type="number" name="quantite" id="quantite" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4 row">
-                                    <label class="col-sm-2 col-form-label">Prix d'achat du produit</label>
-
-                                    <div class="col-sm-8">
-                                        <input type="number" name="prixAchat" id="prixAchat" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4 row">
-                                    <label class="col-sm-2 col-form-label">Prix de vente du produit</label>
-
-                                    <div class="col-sm-8">
-                                        <input type="number" name="prixVente" id="prixVente" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4 row">
-                                    <label class="col-sm-2 col-form-label">Stock minimum</label>
-
-                                    <div class="col-sm-8">
-                                        <input type="number" name="stock" id="stock" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="form-group mb-4 row">
-                                    <label class="col-sm-2 col-form-label">Description du produit</label>
-
-                                    <div class="col-sm-8">
-                                        <input type="text" name="description" id="description" placeholder="" class="form-control" required>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <div class="col-sm-7 ml-sm-auto">
-                                        <button type="submit" class="btn btn-primary">Enregistrer</button>
-                                        <button type="reset" class="btn btn-secondary">Annuler</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-{#                        <!-- Modal produit -->#}
-{#                        <div class="modal fade" id="modalprod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">#}
-{#                            <div class="modal-dialog">#}
-{#                                <div class="modal-content">#}
-{#                                    <div class="modal-header">#}
-{#                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>#}
-{#                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
-{#                                            <span aria-hidden="true">&times;</span>#}
-{#                                        </button>#}
-{#                                    </div>#}
-{#                                    <div class="modal-body">#}
-{#                                        <form action="" name="ajoutProd" method="post" autocomplete="off" id="ajoutProd" >#}
-{#                                            {% csrf_token %}#}
-{#                                            <div class="form-group mb-4 row">#}
-{#                                                <label class="col-sm-2 col-form-label">Catégorie de produit</label>#}
-{#                                                <select class="form-control col-sm-8" name="cateProd" id="cateProd">#}
-{#                                                    <optgroup class="col-sm-8">#}
-{#                                                        {% for categ in categori %}#}
-{#                                                            <option value="{{ categ.id }}" {% if categ.id == produit.categorie.id %} selected{% endif %}>#}
-{#                                                                {{ categ.libelleCate }}#}
-{#                                                            </option>#}
-{#                                                        {% endfor %}#}
-{#                                                    </optgroup>#}
-{##}
-{#                                                </select>#}
-{#                                            </div>#}
-{#                                            <div class="form-group mb-4 row">#}
-{#                                                <label class="col-sm-2 col-form-label">Nom du produit</label>#}
-{##}
-{#                                                <div class="col-sm-8">#}
-{#                                                    <input type="text" name="libelleProd" id="libeProd" placeholder="" class="form-control" required>#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                            <div class="form-group mb-4 row">#}
-{#                                                <label class="col-sm-2 col-form-label">Quantité du produit</label>#}
-{##}
-{#                                                <div class="col-sm-8">#}
-{#                                                    <input type="number" name="quantite" id="qtite" class="form-control" required>#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                            <div class="form-group mb-4 row">#}
-{#                                                <label class="col-sm-2 col-form-label">Prix d'achat du produit</label>#}
-{##}
-{#                                                <div class="col-sm-8">#}
-{#                                                    <input type="number" name="prixAchat" id="prixAch" class="form-control" required>#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                            <div class="form-group mb-4 row">#}
-{#                                                <label class="col-sm-2 col-form-label">Prix de vente du produit</label>#}
-{##}
-{#                                                <div class="col-sm-8">#}
-{#                                                    <input type="number" name="prixVente" id="prixVen" class="form-control" required>#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                            <div class="form-group mb-4 row">#}
-{#                                                <label class="col-sm-2 col-form-label">Stock minimum</label>#}
-{##}
-{#                                                <div class="col-sm-8">#}
-{#                                                    <input type="number" name="stock" id="stockProd" class="form-control" required>#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                            <div class="form-group mb-4 row">#}
-{#                                                <label class="col-sm-2 col-form-label">Description du produit</label>#}
-{##}
-{#                                                <div class="col-sm-8">#}
-{#                                                    <input type="text" name="description" id="descProd" placeholder="" class="form-control" required>#}
-{#                                                </div>#}
-{#                                            </div>#}
-{##}
-{##}
-{#                                            <div class="modal-footer">#}
-{#                                                <button type="submit" class="btn btn-primary">Valider</button>#}
-{#                                            </div>#}
-{#                                        </form>#}
-{#                                    </div>#}
-{##}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <!-- fin modal-->#}
-                        <hr style="background: black">
-                        <!-- datatable produit -->
-                        <div class="page-content fade-in-up">
-                            <div class="ibox">
-                                <div class="ibox-body">
-                                    <h5 class="font-strong mb-4">LISTE DES PRODUITS </h5>
-                                    <div class="flexbox mb-4">
-                                        <div class="flexbox">
-
-                                        </div>
-                                        <div class="input-group-icon input-group-icon-left mr-3">
-                                            <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
-                                            <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Rechercher ...">
-                                        </div>
-                                    </div>
-                                    <div class="table-responsive row">
-                                        <table class="table table-bordered table-hover" id="datatable">
-                                            <thead class="thead-default thead-lg">
+                                <div class="table-responsive row">
+                                    <table class="table table-bordered table-hover" id="datatable">
+                                        <thead class="thead-default thead-lg">
+                                        <tr>
+                                            <th>Ref</th>
+                                            <th>Nom</th>
+                                            <th>Description</th>
+                                            <th>Prix unitaire</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for prod in produit %}
                                             <tr>
-                                                <th>Ref</th>
-                                                <th>Nom</th>
-                                                <th>Description</th>
-                                                <th>Prix unitaire</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% for prod in produit %}
-                                                <tr>
-                                                    <td>{{ prod.id }}</td>
-                                                    <td>{{ prod.cateProd }}-{{ prod.libelleProd }}</td>
-                                                    <td>{{ prod.description }}</td>
-                                                    <td>{{ prod.prixAchat }}</td>
-                                                    <td>
-                                                        <a data-toggle="modal" data-target="#modalprod"  onclick=" " title="modifier">
-                                                            <button class="btn btn-primary" type="submit"><i class="fa fa-pen"></i>Modifier</button>
-                                                        </a>
-                                                        <a href="" ><button class="btn btn-danger" type="submit" ><i class="fa fa-trash"></i>Supprimer</button></a>
+                                                <td>{{ prod.id }}</td>
+                                                <td>{{ prod.cateProd }}-{{ prod.libelleProd }}</td>
+                                                <td>{{ prod.description }}</td>
+                                                <td>{{ prod.prixVente }}</td>
+                                                <td>
+                                                    <a data-toggle="modal" data-target="#modalprod"  onclick=" " title="modifier">
+                                                        <button class="btn btn-primary" type="submit"><i class="fa fa-pen"></i>Modifier</button>
+                                                    </a>
+                                                    <a href="" ><button class="btn btn-danger" type="submit" ><i class="fa fa-trash"></i>Supprimer</button></a>
 
-                                                    </td>
-                                                </tr>
-                                            {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                        <!-- fin du datatables -->
                     </div>
-                    <!-- fin tab produit-->
+                    <!-- fin du datatables -->
+                </div>
+                <!-- fin tab produit-->
 
-                    <!-- debut approvisionnement-->
-                    <div class="tab-pane fade" id="tab-2-3">
-                        <div class="col-sm-8 ml-sm-auto">
-                            <h3>Nouvel approvisionnement de produit</h3>
-                        </div><br>
-                        <div>
-                            <form action="{% url 'addEntre2' %}" method="post" autocomplete="off">
-                                {% csrf_token %}
-                                <div class="form-group mb-4 row">
-                                    <label class="col-sm-2 col-form-label">Nom de produit</label>
-                                    <select class="form-control col-sm-8" name="prodE" id="prodE">
-                                        <optgroup class="col-sm-8">
-                                            {% for pr in produit %}
-                                                <option value="{{ pr.id }}" {% if pr.id == entre.produit.id %} selected{% endif %}>
-                                                    {{ pr.libelleProd }}
-                                                </option>
-                                            {% endfor %}
-                                        </optgroup>
+                <!-- debut approvisionnement-->
+                <div class="tab-pane fade" id="tab-2-3">
+                    <div class="col-sm-8 ml-sm-auto">
+                        <h3>Nouvel approvisionnement de produit</h3>
+                    </div><br>
+                    <div>
+                        <form action="{% url 'addEntre' %}" method="post" autocomplete="off">
+                            {% csrf_token %}
+                            <div class="form-group mb-4 row">
+                                <label class="col-sm-2 col-form-label">Nom de produit</label>
+                                <select class="form-control col-sm-8" name="prodE" id="prodE">
+                                    <optgroup class="col-sm-8">
+                                        {% for pr in produit %}
+                                            <option value="{{ pr.id }}" {% if pr.id == entre.produit.id %} selected{% endif %}>
+                                                {{ pr.libelleProd }}
+                                            </option>
+                                        {% endfor %}
+                                    </optgroup>
 
-                                    </select>
+                                </select>
+                            </div>
+                            <div class="form-group mb-4 row">
+                                <label class="col-sm-2 col-form-label">Quantité</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" name="qtE" id="qtE" placeholder="" class="form-control" required>
                                 </div>
-                                <div class="form-group mb-4 row">
-                                    <label class="col-sm-2 col-form-label">Quantité</label>
+                            </div>
 
-                                    <div class="col-sm-8">
-                                        <input type="text" name="qtE" id="qtE" placeholder="" class="form-control" required>
+                            <div class="modal-footer">
+                                <div class="col-sm-7 ml-sm-auto">
+                                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                    <button type="reset" class="btn btn-secondary">Annuler</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    {#                        <!-- Modal approvisionnement -->#}
+                    {#                        <div class="modal fade" id="modalprod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">#}
+                    {#                            <div class="modal-dialog">#}
+                    {#                                <div class="modal-content">#}
+                    {#                                    <div class="modal-header">#}
+                    {#                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>#}
+                    {#                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
+                    {#                                            <span aria-hidden="true">&times;</span>#}
+                    {#                                        </button>#}
+                    {#                                    </div>#}
+                    {#                                    <div class="modal-body">#}
+                    {#                                        <form action="" name="ajoutApprovi" method="post" autocomplete="off" id="ajoutApprovi" >#}
+                    {#                                            {% csrf_token %}#}
+                    {##}
+                    {#                                            <div class="form-group mb-4 row">#}
+                    {#                                                <label class="col-sm-2 col-form-label">Nom de produit</label>#}
+                    {#                                                <select class="form-control col-sm-8" name="prodE" id="prodEntre">#}
+                    {#                                                    <optgroup class="col-sm-8">#}
+                    {#                                                        {% for pr in produit %}#}
+                    {#                                                            <option value="{{ pr.id }}" {% if pr.id == entre.produit.id %} selected{% endif %}>#}
+                    {#                                                                {{ pr.libelleProd }}#}
+                    {#                                                            </option>#}
+                    {#                                                        {% endfor %}#}
+                    {#                                                    </optgroup>#}
+                    {##}
+                    {#                                                </select>#}
+                    {#                                            </div>#}
+                    {#                                            <div class="form-group mb-4 row">#}
+                    {#                                                <label class="col-sm-2 col-form-label">Quantité</label>#}
+                    {##}
+                    {#                                                <div class="col-sm-8">#}
+                    {#                                                    <input type="text" name="qtE" id="qtEntre" placeholder="" class="form-control" required>#}
+                    {#                                                </div>#}
+                    {#                                            </div>#}
+                    {#                                            <div class="modal-footer">#}
+                    {#                                                <button type="submit" class="btn btn-primary">Valider</button>#}
+                    {#                                            </div>#}
+                    {#                                        </form>#}
+                    {#                                    </div>#}
+                    {#                                </div>#}
+                    {#                            </div>#}
+                    {#                        </div>#}
+                    {#                        <!-- fin modal-->#}
+                    <hr style="background: black">
+                    <!-- datatable approvisionnement -->
+                    <div class="page-content fade-in-up">
+                        <div class="ibox">
+                            <div class="ibox-body">
+                                <h5 class="font-strong mb-4">LISTE DES APPROVISIONNEMENTS</h5>
+                                <div class="flexbox mb-4">
+                                    <div class="flexbox">
+
+                                    </div>
+                                    <div class="input-group-icon input-group-icon-left mr-3">
+                                        <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
+                                        <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Rechercher ...">
                                     </div>
                                 </div>
-
-                                <div class="modal-footer">
-                                    <div class="col-sm-7 ml-sm-auto">
-                                        <button type="submit" class="btn btn-primary">Enregistrer</button>
-                                        <button type="reset" class="btn btn-secondary">Annuler</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-{#                        <!-- Modal approvisionnement -->#}
-{#                        <div class="modal fade" id="modalprod" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">#}
-{#                            <div class="modal-dialog">#}
-{#                                <div class="modal-content">#}
-{#                                    <div class="modal-header">#}
-{#                                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>#}
-{#                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">#}
-{#                                            <span aria-hidden="true">&times;</span>#}
-{#                                        </button>#}
-{#                                    </div>#}
-{#                                    <div class="modal-body">#}
-{#                                        <form action="" name="ajoutApprovi" method="post" autocomplete="off" id="ajoutApprovi" >#}
-{#                                            {% csrf_token %}#}
-{##}
-{#                                            <div class="form-group mb-4 row">#}
-{#                                                <label class="col-sm-2 col-form-label">Nom de produit</label>#}
-{#                                                <select class="form-control col-sm-8" name="prodE" id="prodEntre">#}
-{#                                                    <optgroup class="col-sm-8">#}
-{#                                                        {% for pr in produit %}#}
-{#                                                            <option value="{{ pr.id }}" {% if pr.id == entre.produit.id %} selected{% endif %}>#}
-{#                                                                {{ pr.libelleProd }}#}
-{#                                                            </option>#}
-{#                                                        {% endfor %}#}
-{#                                                    </optgroup>#}
-{##}
-{#                                                </select>#}
-{#                                            </div>#}
-{#                                            <div class="form-group mb-4 row">#}
-{#                                                <label class="col-sm-2 col-form-label">Quantité</label>#}
-{##}
-{#                                                <div class="col-sm-8">#}
-{#                                                    <input type="text" name="qtE" id="qtEntre" placeholder="" class="form-control" required>#}
-{#                                                </div>#}
-{#                                            </div>#}
-{#                                            <div class="modal-footer">#}
-{#                                                <button type="submit" class="btn btn-primary">Valider</button>#}
-{#                                            </div>#}
-{#                                        </form>#}
-{#                                    </div>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
-{#                        <!-- fin modal-->#}
-                        <hr style="background: black">
-                        <!-- datatable approvisionnement -->
-                        <div class="page-content fade-in-up">
-                            <div class="ibox">
-                                <div class="ibox-body">
-                                    <h5 class="font-strong mb-4">LISTE DES APPROVISIONNEMENTS</h5>
-                                    <div class="flexbox mb-4">
-                                        <div class="flexbox">
-
-                                        </div>
-                                        <div class="input-group-icon input-group-icon-left mr-3">
-                                            <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
-                                            <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Rechercher ...">
-                                        </div>
-                                    </div>
-                                    <div class="table-responsive row">
-                                        <table class="table table-bordered table-hover" id="datatable">
-                                            <thead class="thead-default thead-lg">
+                                <div class="table-responsive row">
+                                    <table class="table table-bordered table-hover" id="datatable">
+                                        <thead class="thead-default thead-lg">
+                                        <tr>
+                                            <th>Produits</th>
+                                            <th>Quantité avant approvisionnement</th>
+                                            <th>Quantité approvisionnée</th>
+                                            <th>Date</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for entr in entre %}
                                             <tr>
-                                                <th>Produits</th>
-                                                <th>Quantité avant approvisionnement</th>
-                                                <th>Quantité approvisionnée</th>
-                                                <th>Date</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            {% for entr in entre %}
-                                                <tr>
-                                                    <td>{{ entr.prodE.cateProd.libelleCate }}-{{ entr.prodE.libelleProd }}</td>
-                                                    <td>{{ entr.prodE.quantite }}</td>
-                                                    <td>{{ entr.qtE }}</td>
-                                                    <td>{{ entr.dateE }}</td>
-                                                    <td>
-                                                        <a data-toggle="modal" data-target="#modalprod"  onclick=" " title="modifier">
-                                                            <button class="btn btn-primary" type="submit"><i class="fa fa-pen"></i>Modifier</button>
-                                                        </a>
-                                                        <a href="" ><button class="btn btn-danger" type="submit" ><i class="fa fa-trash"></i>Supprimer</button></a>
+                                                <td>{{ entr.prodE.cateProd.libelleCate }}-{{ entr.prodE.libelleProd }}</td>
+                                                <td>{{ entr.prodE.quantite }}</td>
+                                                <td>{{ entr.qtE }}</td>
+                                                <td>{{ entr.dateE }}</td>
+                                                <td>
+                                                    <a data-toggle="modal" data-target="#modalprod"  onclick=" " title="modifier">
+                                                        <button class="btn btn-primary" type="submit"><i class="fa fa-pen"></i>Modifier</button>
+                                                    </a>
+                                                    <a href="" ><button class="btn btn-danger" type="submit" ><i class="fa fa-trash"></i>Supprimer</button></a>
 
-                                                    </td>
-                                                </tr>
-                                            {% endfor %}
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
-                        <!-- fin du datatables -->
                     </div>
+                    <!-- fin du datatables -->
                 </div>
             </div>
             <!--Fin du corps-->
