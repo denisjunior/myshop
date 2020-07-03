@@ -13,13 +13,13 @@
                         <div class="alert alert-success">{{ message }}</div>
                     {% endfor %}
                 {% endif %}
-                <form method="post" name ="ajoutcategorie" id="ajoutcategorie" action="{% url 'modification' modif.id %}">
+                <form action="{% url 'update_entre' entre.id%}" method="post" name ="ajoutcategorie" id="ajoutcategorie" >
                     {% csrf_token %}
                     <div class="form-group mb-4 row">
-                        <label class="col-sm-2 col-form-label">Nouveau Libellé catégorie</label>
+                        <label class="col-sm-2 col-form-label">Quantité</label>
 
                         <div class="col-sm-8">
-                            <input type="text" name="libellecateg" id="libelleCateg" value="{{modif.libelleCate }}" class="form-control" required>
+                            <input type="text" name="qtE" id="qtE" value="{{entre.qtE }}" class="form-control">
                         </div>
                     </div>
                     <div class="modal-footer">

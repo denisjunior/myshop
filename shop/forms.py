@@ -14,4 +14,18 @@ class CategorieForm(forms.ModelForm):
 class ProduitForm(forms.ModelForm):
     class Meta:
         model   = Produit
-        fields  = '__all__'
+        fields  = (
+            'libelleProd',
+            'quantite',
+            'prixAchat',
+            'prixVente',
+            'stock',
+            'description',
+            'cateProd',
+            'fournisseur',
+            'etatP'
+        )
+class EntreForm(forms.ModelForm):
+    class Meta:
+        model   = Entre
+        fields  = 'qtE',

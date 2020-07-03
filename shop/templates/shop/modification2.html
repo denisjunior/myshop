@@ -5,22 +5,27 @@
     <div class="column">
         <section class="panel">
             <div class="panel-body">
+                <div class="col-sm-8 ml-sm-auto">
+                    <h3>Modifier la quantité</h3>
+                </div><br>
                 {% if messages %}
                     {% for message in messages %}
                         <div class="alert alert-success">{{ message }}</div>
                     {% endfor %}
                 {% endif %}
-                <form method="post" name ="ajoutcategorie" id="ajoutcategorie" action="{% url 'modification' modif.id %}">
+                <form method="post" name ="ajoutcategorie" id="ajoutcategorie" action="{% url 'modifi' modif.id %}">
                     {% csrf_token %}
-                    <div class="form-group "><label class="control-label">Nouveau Libellé catégorie</label>
+                    <div class="form-group mb-4 row">
+                        <label class="col-sm-2 col-form-label">Nouveau Libellé catégorie</label>
 
-                        <div class="col-lg-6">
+                        <div class="col-sm-8">
                             <input type="text" name="libellecateg" id="libelleCateg" value="{{modif.libelleCate }}" class="form-control" required>
                         </div>
-
-                        <div class=""><p></br></p></div>
-                        <button type="submit" class="btn btn-primary">Valider</button>
-
+                    </div>
+                    <div class="modal-footer">
+                        <div class="col-sm-7 ml-sm-auto">
+                            <button type="submit" class="btn btn-primary">Valider</button>
+                        </div>
                     </div>
 
                 </form>

@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
     <!-- datatable vente -->
     <div class="page-content fade-in-up">
         <div class="row">
-            <h2 style="margin-left:25%"><p> Le Total des bénéficie d'aujourd'hui est de <b> 0 </b> Francs </p></h2>
+            <h2 style="margin-left:25%"><p> Le Total des bénéficie d'aujourd'hui est de <b> {{ totalg }} </b> Francs </p></h2>
 
             <div style="margin-left:30%"><br><br><br>
                 <h4 style="margin-left:35%">Recherche par date</h4><br>
@@ -50,30 +50,67 @@
                     <button class="btn btn-primary" type="submit" >Afficher</button></a>
             </div>
         </div><br><br>
-        <div>
-            <div class="flexbox mb-4">
-                <div class="input-group-icon input-group-icon-left mr-3">
-                    <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
-                    <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Search ...">
-                </div>
-            </div>
-            <div class="table-responsive row">
-                <table class="table table-bordered table-hover" id="datatable">
-                    <thead class="thead-default thead-lg">
-                    <tr>
-                        <th>Nom</th>
-                        <th>Quantité</th>
-                        <th>Prix unitaire</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
 
-                    </tbody>
-                </table>
+        <div class="flexbox mb-4">
+            <div class="input-group-icon input-group-icon-left mr-3">
+                <span class="input-icon input-icon-right font-16"><i class="ti-search"></i></span>
+                <input class="form-control form-control-rounded form-control-solid" id="key-search" type="text" placeholder="Search ...">
             </div>
+        </div>
+        <div class="table-responsive row">
+            <table class="table table-bordered table-hover" id="datatable">
+                <thead class="thead-default thead-lg">
+                <tr>
+                    <th>Date</th>
+                    <th>Total des ventes</th>
+                    <th>Marge bénéficieaire</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{facts.dateF }}</td>
+                    <td>{{ totalv }}</td>
+                    <td>{{ totalg }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div><br><br>
+        <div>
+            <canvas id="line_chart" style="height:200px;"></canvas>
         </div>
 
     </div>
+{% endblock %}
+{% block script %}
+    <script type="text/javascript">
+        var lineData = {
+            labels: ["{{ facts.dateF }}"],
+            datasets: [
+                {
+                    label: "Vente",
+                    backgroundColor: 'rgba(213,217,219, 0.5)',
+                    borderColor: 'rgb(255, 0, 0)',
+                    pointBackgroundColor: 'rgba(67,174,168,1)',
+                    pointBorderColor: "#fff",
+                    data: [{{ totalv }}],
+                    //fill: false, // for removing background
+                },{
+                    label: "Marge bénéficiaire",
+                    backgroundColor: 'rgba(213,217,219, 0.5)',
+                    borderColor: 'rgb(0, 0, 255)',
+                    pointBorderColor: "#fff",
+                    data: [{{ totalg }}],
+                    //fill: false,rgba(213,217,219, 1),,rgba(67,174,168,0.7),, back1rgba(67,174,168,0.5)
+                }
+            ]
+        };
+        var lineOptions = {
+            responsive: true,
+            maintainAspectRatio: false
+        };
+        var ctx = document.getElementById("line_chart").getContext("2d");
 
+        new Chart(ctx, {type: 'line', data: lineData, options:lineOptions});
+
+    </script>
 {% endblock %}

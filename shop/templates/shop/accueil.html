@@ -10,9 +10,11 @@
                         <optgroup class="col-sm-8">
                             <option value="" selected="selected">-selectionner-</option>
                             {% for pro in produit %}
-                                <option  value="{{pro.id}}">
-                                    {{pro.libelleProd}}
-                                </option>
+                                {% if pro.etatP == null %}
+                                    <option  value="{{pro.id}}">
+                                        {{pro.libelleProd}}
+                                    </option>
+                                {% endif %}
                             {% endfor %}
                         </optgroup>
                     </select>
@@ -134,6 +136,33 @@
             </div>
         </div>
         <!-- fin modal-->
+        <!-- Modal -->
+        <div class="modal fade" id="modalQte" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modification de la quantité du produit</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal style-form" id="modifier" method="post" autocomplete="off">
+                            {% csrf_token %}
+                            <div class="form-group mb-4 row">
+                                <label class="col-sm-2 col-form-label">quantité</label>
+                                <div class="col-sm-10">
+                                    <input class="form-control" id="modifqte" type="text">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" onclick="modif()" class="btn btn-primary">Valider</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
     </div><br>
@@ -199,7 +228,6 @@
         var toto=0;
         var somm=0;
 
-
         $(document).on('submit', '#ajoutPro', function(event)
         {
             var t = $('#datatable').DataTable();
@@ -207,9 +235,11 @@
             event.preventDefault();
 
             let form = $(this);
-            var modifier = '<button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#modalModif">modifier</button>'
-            var supprimer = '<button type="reset" class="btn btn-danger">supprimer</button>'
             quantity =document.getElementById('quatite').value
+
+            document.getElementById('modifqte').value=quantity
+            var modifier = '<button type="submit" data-toggle="modal" data-target="#modalQte" class="btn btn-primary">modifier</button>'
+            var supprimer = '<button type="reset" class="btn btn-danger">supprimer</button>'
             if(quantity<0)
             {
                 alert('vous avez choisit une quantité de produit inférieur à zéro');
@@ -242,14 +272,18 @@
                 facture.produit.push(b)
                 console.log(facture)
             }
-
             document.getElementById('peye').innerHTML=totaux;
             document.getElementById('to').innerHTML=toto;
             document.getElementById('peye2').innerHTML=totaux;
             document.getElementById('to2').innerHTML=toto;
-
-
         } );
+        
+        // fonction qui permet de modifier la quantité acheté
+        function modif() {
+            if ( document.getElementById('modifqte').value>0){
+                quantity = document.getElementById('modifqte').value
+            }
+        }
 
 
         //fonction qui permet de calculer la monnaie qu'on doit remettre au client

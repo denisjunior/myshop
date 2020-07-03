@@ -31,6 +31,9 @@
     <!-- THEME STYLES-->
     <link href="{% static 'assets/css/main.min.css' %}" rel="stylesheet" />
     <!-- PAGE LEVEL STYLES-->
+    <!-- invoice -->
+    <link href="{% static 'assets/invoice/invoice.css' %}" rel="stylesheet" />
+    <link href="{% static 'assets/invoice/gritter.css' %}" rel="stylesheet" />
 
 </head>
 
@@ -66,8 +69,8 @@
 
                 <li class="dropdown dropdown-user">
                     <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
-                        <span>Caissier</span>
-                        <img src="{% static 'assets/img/users/admin-image.png' %}" alt="image" />
+                        <span>{{ user.username }}</span>
+                        <img src="{% static 'assets/img/users/user.png' %}" alt="image" />
                     </a>
                     <div class="dropdown-menu dropdown-arrow dropdown-menu-right admin-dropdown-menu">
                         <div class="dropdown-arrow"></div>
@@ -181,6 +184,9 @@
 <!-- CORE SCRIPTS-->
 <script src="{% static 'assets/js/app.min.js' %}"></script>
 <!-- PAGE LEVEL SCRIPTS-->
+<!-- invoice -->
+<script src="{% static 'assets/invoice/gritter.js' %}"></script>
+<script src="{% static 'assets/invoice/gritter-conf.js' %}"></script>
 <script>
     $(function() {
         $('#datatable').DataTable({

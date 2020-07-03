@@ -66,8 +66,8 @@
 
                 <li class="dropdown dropdown-user">
                     <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
-                        <span>magasinier</span>
-                        <img src="{% static 'assets/img/users/admin-image.png' %}" alt="image" />
+                        <span>{{ user.username }}</span>
+                        <img src="{% static 'assets/img/users/user.png' %}" alt="image" />
                     </a>
                     <div class="dropdown-menu dropdown-arrow dropdown-menu-right admin-dropdown-menu">
                         <div class="dropdown-arrow"></div>
@@ -115,7 +115,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="#"><i class="sidebar-item-icon fa fa-address-book"></i>
+                            <a href="{% url 'liste_fournisseur' %}"><i class="sidebar-item-icon fa fa-address-book"></i>
                                 <span class="nav-label">Nos fournisseurs</span>
                             </a>
                         </li>

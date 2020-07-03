@@ -26,6 +26,11 @@
         <div class="tab-content">
             <!--Début de la catégorie-->
             <div class="tab-pane fade show active" id="tab-2-1">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-success">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
                 <div class="col-sm-8 ml-sm-auto">
                     <h3>Ajout d'une Nouvelle Categorie de Produit</h3>
                 </div><br>
@@ -71,18 +76,19 @@
                         </thead>
                         <tbody>
                         {% for categorie in cate %}
-                            <tr>
-                                <td>{{ categorie.id }}</td>
-                                <td>{{ categorie.libelleCate }}</td>
-                                <td>
-                                    <a class="btn btn-primary"   name="Modifier"  href="{% url 'modifi' categorie.id %}" value="">Modifier</a>
-                                    <!-- <a data-toggle="modal" data-target="#exampleModal"  onclick="updateCategorie({{ categorie.id }}</) " title="modifier"> -->
-                                    <!-- <button class="btn btn-primary" type="submit"><i class="fa fa-pen"></i>Modifier</button> -->
-                                    <!-- </a> -->
-                                    <a href="" ><button class="btn btn-danger" type="submit" ><i class="fa fa-trash"></i>Supprimer</button></a>
+                            {% if categorie.etatC == null %}
+                                <tr>
+                                    <td>{{ categorie.id }}</td>
+                                    <td>{{ categorie.libelleCate }}</td>
+                                    <td>
+                                        <a href="{% url 'modification' categorie.id %}" title="Modifier" >
+                                             <button class="btn btn-primary" type="submit"><i class="fa fa-pen"></i>Modifier</button>
+                                        </a>
+                                        <a href="{% url 'deletecate' categorie.id %}" ><button class="btn btn-danger" type="submit" ><i class="fa fa-trash"></i>Supprimer</button></a>
 
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            {% endif %}
                         {% endfor %}
                         </tbody>
                     </table>
@@ -100,13 +106,28 @@
                     <form action="{% url 'addProduit' %}" method="post" autocomplete="off">
                         {% csrf_token %}
                         <div class="form-group mb-4 row">
+                            <label class="col-sm-2 col-form-label">Fournisseur</label>
+                            <select class="form-control col-sm-8" name="fournisseur" id="fournisseur">
+                                <optgroup class="col-sm-8">
+                                    {% for val in fournisseurs %}
+                                        <option value="{{ val.id }}"selected>
+                                            {{ val.nomF }}
+                                        </option>
+                                    {% endfor %}
+                                </optgroup>
+
+                            </select>
+                        </div>
+                        <div class="form-group mb-4 row">
                             <label class="col-sm-2 col-form-label">Catégorie de produit</label>
                             <select class="form-control col-sm-8" name="cateProd" id="cateProd">
                                 <optgroup class="col-sm-8">
                                     {% for categ in categori %}
-                                        <option value="{{ categ.id }}" {% if categ.id == produit.categorie.id %} selected{% endif %}>
-                                            {{ categ.libelleCate }}
-                                        </option>
+                                        {% if categ.etatC == null %}
+                                            <option value="{{ categ.id }}"selected>
+                                                {{ categ.libelleCate }}
+                                            </option>
+                                        {% endif %}
                                     {% endfor %}
                                 </optgroup>
 
@@ -189,20 +210,22 @@
                         </thead>
                         <tbody>
                         {% for prod in produit %}
-                            <tr>
-                                <td>{{ prod.id }}</td>
-                                <td>{{ prod.cateProd }}-{{ prod.libelleProd }}</td>
-                                <td>{{ prod.description }}</td>
-                                <td>{{ prod.prixVente }}</td>
-                                <td>{{ prod.quantite }}</td>
-                                <td>
-                                    <a data-toggle="modal" data-target="#modalprod"  onclick=" " title="modifier">
-                                        <button class="btn btn-primary" type="submit"><i class="fa fa-pen"></i>Modifier</button>
-                                    </a>
-                                    <a href="" ><button class="btn btn-danger" type="submit" ><i class="fa fa-trash"></i>Supprimer</button></a>
+                            {% if prod.etatP == null %}
+                                <tr>
+                                    <td>{{ prod.id }}</td>
+                                    <td>{{ prod.cateProd }}-{{ prod.libelleProd }}</td>
+                                    <td>{{ prod.description }}</td>
+                                    <td>{{ prod.prixVente }}</td>
+                                    <td>{{ prod.quantite }}</td>
+                                    <td>
+                                        <a href="{% url 'update_produit' prod.id %}" title="modifier">
+                                            <button class="btn btn-primary" type="submit"><i class="fa fa-pen"></i>Modifier</button>
+                                        </a>
+                                        <a href="{% url 'deleteprod' prod.id %}" ><button class="btn btn-danger" type="submit" ><i class="fa fa-trash"></i>Supprimer</button></a>
 
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            {% endif %}
                         {% endfor %}
                         </tbody>
                     </table>
@@ -224,9 +247,11 @@
                             <select class="form-control col-sm-8" name="prodE" id="prodE">
                                 <optgroup class="col-sm-8">
                                     {% for pr in produit %}
-                                        <option value="{{ pr.id }}" {% if pr.id == entre.produit.id %} selected{% endif %}>
-                                            {{ pr.libelleProd }}
-                                        </option>
+                                        {% if pr.etatP == null %}
+                                            <option value="{{ pr.id }}"  selected>
+                                                {{ pr.libelleProd }}
+                                            </option>
+                                        {% endif %}
                                     {% endfor %}
                                 </optgroup>
 
@@ -274,19 +299,20 @@
                         </thead>
                         <tbody>
                         {% for entr in entre %}
-                            <tr>
-                                <td>{{ entr.prodE.cateProd.libelleCate }}-{{ entr.prodE.libelleProd }}</td>
-                                <td>{{ entr.qtAvant }}</td>
-                                <td>{{ entr.qtE }}</td>
-                                <td>{{ entr.dateE }}</td>
-                                <td>
-                                    <a data-toggle="modal" data-target="#modalprod"  onclick=" " title="modifier">
-                                        <button class="btn btn-primary" type="submit"><i class="fa fa-pen"></i>Modifier</button>
-                                    </a>
-                                    <a href="" ><button class="btn btn-danger" type="submit" ><i class="fa fa-trash"></i>Supprimer</button></a>
-
-                                </td>
-                            </tr>
+                            {% if entr.etatE == null %}
+                                <tr>
+                                    <td>{{ entr.prodE.cateProd.libelleCate }}-{{ entr.prodE.libelleProd }}</td>
+                                    <td>{{ entr.qtAvant }}</td>
+                                    <td>{{ entr.qtE }}</td>
+                                    <td>{{ entr.dateE }}</td>
+                                    <td>
+                                        <a href="{% url 'update_entre' entr.id %}" title="modifier">
+                                            <button class="btn btn-primary" type="submit"><i class="fa fa-pen"></i>Modifier</button>
+                                        </a>
+                                        <a href="{% url 'deletentre' entr.id %}" ><button class="btn btn-danger" type="submit" ><i class="fa fa-trash"></i>Supprimer</button></a>
+                                    </td>
+                                </tr>
+                            {% endif %}
                         {% endfor %}
                         </tbody>
                     </table>
