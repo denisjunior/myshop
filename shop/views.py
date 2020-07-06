@@ -7,6 +7,7 @@ import json
 from django.http import JsonResponse
 from django.db.models import F
 from datetime import date
+from django.contrib.auth.models import User, Group
 
 from django.core.serializers import serialize
 # Create your views here.
@@ -291,6 +292,22 @@ def delete_entre(request, id):
     element.etatE = True
     element.save()
     return redirect(entreStock)
+
+@login_required
+def add_user(request):
+    groupe = Group.objects.all()
+    users   = User.objects.all()
+
+    if request.method == 'POST':
+        formUser = UserForm(request.POST)
+        if formUser.is_valid():
+            formUser.save()
+            messages.add_message(request, messages.INFO, 'utilisateur enregistré avec succès')
+        else:
+            return redirect(add_user)
+    else:
+        formUser = UserForm
+    return render(request, 'shop/utilisateurs.html', locals())
 #################les views qui permettent de traité la page du magasinier#############################
 @login_required
 def index2(request):

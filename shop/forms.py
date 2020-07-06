@@ -1,6 +1,6 @@
 from django import forms
 from shop.models import *
-
+from django.contrib.auth.models import User
 class FournisseurForm(forms.ModelForm):
     class Meta:
         model=Fournisseur
@@ -29,3 +29,13 @@ class EntreForm(forms.ModelForm):
     class Meta:
         model   = Entre
         fields  = 'qtE',
+
+class UserForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = (
+            'username',
+            'email',
+            'password',
+            'groups'
+        )

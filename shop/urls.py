@@ -18,6 +18,7 @@ urlpatterns = [
     path('delete/categorie/<int:id>/', views.delete_categorie, name='deletecate'),
     path('delete/produit/<int:id>/', views.delete_produit, name='deleteprod'),
     path('delete/approvision/<int:id>/', views.delete_entre, name='deletentre'),
+    path('add_user/', views.add_user, name='adduser'),
 
     ## listes des factures
     path('factures/', views.facture, name='facliste'),
