@@ -68,7 +68,6 @@
         </div>
         <form class="ibox-body" id="login-form" action="{% url 'login' %}" method="POST">
         {% csrf_token %}
-
              <div class="form-group">
                  {% if messages %}
                     {% for message in messages %}

@@ -67,6 +67,7 @@
             <!-- END TOP-LEFT TOOLBAR-->
             <!-- START TOP-RIGHT TOOLBAR-->
             <ul class="nav navbar-toolbar">
+                <button class="btn btn-outline-primary btn-rounded">Changer votre mot de passe</button>
 
                 <li class="dropdown dropdown-user">
                     <a class="nav-link dropdown-toggle link" data-toggle="dropdown">
@@ -88,7 +89,7 @@
 
                         <div class="admin-menu-content">
                             <div class="d-flex justify-content-between mt-2">
-                                <a class="d-flex align-items-center" href="{% url 'logout' %}">Se déconnecter<i class="ti-shift-right ml-2 font-20"></i></a>
+                                <a class="d-flex align-items-center"  href="{% url 'logout' %}" onclick="return confirm('Attention! Vous êtes sur le point de vous déconnecter')">Se déconnecter<i class="ti-shift-right ml-2 font-20"></i></a>
                             </div>
                         </div>
                     </div>

@@ -299,15 +299,23 @@ def add_user(request):
     users   = User.objects.all()
 
     if request.method == 'POST':
-        formUser = UserForm(request.POST)
-        if formUser.is_valid():
-            formUser.save()
-            messages.add_message(request, messages.INFO, 'utilisateur enregistré avec succès')
-        else:
-            return redirect(add_user)
+        group = request.POST.get('groups')
+        nom   = request.POST.get('username')
+        mail  = request.POST.get('email')
+        mdp   = request.POST.get('password')
+
+        my_group = Group.objects.get(id=group)
+
+        user = User.objects.create_user(username=nom, email=mail, password=mdp)
+        my_group.user_set.add(user)
+        user.save()
+
+        messages.add_message(request, messages.INFO, 'utilisateur enregistré avec succès')
+        return redirect(add_user)
     else:
-        formUser = UserForm
+       formUser = UserForm
     return render(request, 'shop/utilisateurs.html', locals())
+
 #################les views qui permettent de traité la page du magasinier#############################
 @login_required
 def index2(request):
