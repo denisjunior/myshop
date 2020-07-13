@@ -80,7 +80,7 @@ class Facture(models.Model):
         return self.id
 
 class Facture_Ligne(models.Model):
-    datefac = models.DateField(auto_now=True)
+    datefac     = models.DateField(auto_now=True)
     produitId   = models.ForeignKey(Produit, on_delete=models.CASCADE)
     qteAchete   = models.IntegerField(default=None)
     prix        = models.FloatField(default=None)

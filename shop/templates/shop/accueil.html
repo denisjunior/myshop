@@ -147,7 +147,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form class="form-horizontal style-form" id="modifier" method="post" autocomplete="off">
+                        <form class="form-horizontal style-form" id="modifier_form" method="post" autocomplete="off">
                             {% csrf_token %}
                             <div class="form-group mb-4 row">
                                 <label class="col-sm-2 col-form-label">quantité</label>
@@ -156,7 +156,7 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button type="submit" onclick="modif()" id="modifier" class="btn btn-primary">Valider</button>
+                                <button type="submit" onclick="" id="modifQ" class="btn btn-primary">Valider</button>
                             </div>
                         </form>
                     </div>
@@ -185,7 +185,7 @@
         var caisseform = document.getElementById('caisse');
         var form = document.querySelector('form');
         var facture={"produit":[],"caisse":[]};
-        var updateform = document.getElementById('modifier');
+        var updateform = document.getElementById('modifier_form');
 
 
         $("select").on("change", function() {
@@ -278,15 +278,23 @@
             document.getElementById('peye2').innerHTML=totaux;
             document.getElementById('to2').innerHTML=toto;
         } );
-        
-        // fonction qui permet de modifier la quantité acheté
-        function modif() {
-            updateform.addEventListener('submit',v);
-            if ( document.getElementById('modifqte').value>0){
-                quantity = document.getElementById('modifqte').value
-            }
+
+        function v(event)
+        {
+            event.preventDefault();
         }
 
+        // fonction qui permet de modifier la quantité acheté
+
+        $(document).on('modifQ')
+         function modif(){
+            modifier_form.addEventListener('submit',v);
+            if (document.getElementById('modifqte').value>0) {
+                quantity = document.getElementById('modifqte').value
+            }else{
+                alert('ok')
+            }
+        };
 
         //fonction qui permet de calculer la monnaie qu'on doit remettre au client
         function calcul()
@@ -400,10 +408,6 @@
             }
         }
 
-        function v(event)
-        {
-            event.preventDefault();
-        }
 
         function impression() {
             caisseform.addEventListener('submit',v);

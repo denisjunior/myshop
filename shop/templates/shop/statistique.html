@@ -6,49 +6,49 @@
         <div class="row">
             <h2 style="margin-left:25%"><p> Le Total des bénéficie d'aujourd'hui est de <b> {{ totalg }} </b> Francs </p></h2>
 
-            <div style="margin-left:30%"><br><br><br>
-                <h4 style="margin-left:35%">Recherche par date</h4><br>
-                <label>Date de debut:</label><input type="date" id="start"  style="margin-right: 50px" >
-                <label>Date de fin:</label><input type="date" id="end">
-                <script type="text/javascript">
-                    function st()
-                    {
-                        var d =document.getElementById('start').value;
-                        var f =document.getElementById('end').value;
-
-                        return 'Stat/'+d+'/'+f;
-                    }
-
-                    function deb()
-                    {
-                        var d =document.getElementById('start').value;
-                        return d;
-                    }
-
-                    function fi()
-                    {
-                        var f =document.getElementById('end').value;
-                        return f;
-
-                    }
-                </script>
-                <a onclick="
-                        if (st()=='Stat//')
-                                                {
-
-                                                }else if(deb()=='')
-                                                {
-
-                                                }else if(fi()=='')
-                                                {
-
-                                                }
-                                                else if(deb()<=fi())
-                                                {
-                                                this.href=st()
-                                                }" >
-                    <button class="btn btn-primary" type="submit" >Afficher</button></a>
-            </div>
+{#            <div style="margin-left:30%"><br><br><br>#}
+{#                <h4 style="margin-left:35%">Recherche par date</h4><br>#}
+{#                <label>Date de debut:</label><input type="date" id="start"  style="margin-right: 50px" >#}
+{#                <label>Date de fin:</label><input type="date" id="end">#}
+{#                <script type="text/javascript">#}
+{#                    function st()#}
+{#                    {#}
+{#                        var d =document.getElementById('start').value;#}
+{#                        var f =document.getElementById('end').value;#}
+{##}
+{#                        return 'Stat/'+d+'/'+f;#}
+{#                    }#}
+{##}
+{#                    function deb()#}
+{#                    {#}
+{#                        var d =document.getElementById('start').value;#}
+{#                        return d;#}
+{#                    }#}
+{##}
+{#                    function fi()#}
+{#                    {#}
+{#                        var f =document.getElementById('end').value;#}
+{#                        return f;#}
+{##}
+{#                    }#}
+{#                </script>#}
+{#                <a onclick="#}
+{#                        if (st()=='Stat//')#}
+{#                                                {#}
+{##}
+{#                                                }else if(deb()=='')#}
+{#                                                {#}
+{##}
+{#                                                }else if(fi()=='')#}
+{#                                                {#}
+{##}
+{#                                                }#}
+{#                                                else if(deb()<=fi())#}
+{#                                                {#}
+{#                                                this.href=st()#}
+{#                                                }" >#}
+{#                    <button class="btn btn-primary" type="submit" >Afficher</button></a>#}
+{#            </div>#}
         </div><br><br>
 
         <div class="flexbox mb-4">
